@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import './App.css'; // Import the separated stylesheet
+import travelData from './data.json'; // FIX: Import data directly from the src folder
 
 // --- Helper Functions & Constants ---
 const modeLogos = { 'Bus': '/bus.png', 'Train': '/train.png', 'Car': '/uber.png', 'Auto': '/uber.png', 'Flight': '/plane.png', 'Metro': '/metro.png', 'Default': '/logo.png' };
@@ -64,7 +65,8 @@ const AutocompleteInput = ({ value, onChange, placeholder, label, allLocations }
     };
     
     return (
-        <div className="input-group" ref={wrapperRef}>
+        // FIX: Added 'is-active' class when suggestions are shown to control z-index
+        <div className={`input-group ${showSuggestions ? 'is-active' : ''}`} ref={wrapperRef}>
             <label>{label}</label>
             <div className="input-wrapper">
                 <input
@@ -100,10 +102,17 @@ const FilterControls = ({ onSort, currentSort, onToggleEco, isEco }) => (
 const SearchForm = ({ onSearch, allLocations, onSort, currentSort, onToggleEco, isEco, showFilters }) => {
     const [from, setFrom] = useState('');
     const [to, setTo] = useState('');
-    const [journeyDate, setJourneyDate] = useState('');
+    const [journeyDate, setJourneyDate] = useState('2025-09-26');
     const handleSubmit = (e) => { e.preventDefault(); onSearch(from, to); };
     const handleSwap = () => { setFrom(to); setTo(from); };
-    useEffect(() => { setJourneyDate(new Date().toISOString().split('T')[0]); }, []);
+    
+    // Set initial date based on current date, but format it correctly
+    useEffect(() => {
+        const today = new Date();
+        const offset = today.getTimezoneOffset();
+        const localDate = new Date(today.getTime() - (offset*60*1000));
+        setJourneyDate(localDate.toISOString().split('T')[0]);
+    }, []);
     
     return (
         <section className="form-section">
@@ -180,40 +189,24 @@ const MultiLegResultCard = ({ result }) => (
 );
 
 function App() {
-    const [allData, setAllData] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(true); // Used for aesthetic loading screen
     const [results, setResults] = useState(null);
     const [isLightMode, setIsLightMode] = useState(false);
     const [sortBy, setSortBy] = useState(null);
     const [ecoFriendlyOnly, setEcoFriendlyOnly] = useState(false);
 
-    // Fetch travel data from data.json
+    // Effect for the initial loading screen animation
     useEffect(() => {
-      const fetchData = async () => {
-        try {
-          // Assumes data.json is in the /public folder
-          const response = await fetch('/data.json');
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          const data = await response.json();
-          setAllData(data);
-        } catch (error) {
-          console.error("Could not fetch travel data:", error);
-          // Optionally, set an error state here to show a message to the user
-        } finally {
-          setIsLoading(false);
-        }
-      };
-
-      fetchData();
-    }, []); // The empty dependency array ensures this runs only once on mount
+        setTimeout(() => {
+            setIsLoading(false);
+        }, 750); // A short delay for a smooth entrance
+    }, []);
 
     useEffect(() => { document.body.classList.toggle('light-mode', isLightMode); }, [isLightMode]);
     
     const allLocations = useMemo(() => { 
         const locations = new Set(); 
-        allData.forEach(route => { 
+        travelData.forEach(route => { 
             locations.add(route.from); 
             locations.add(route.to); 
             if(route.type === 'connected') { 
@@ -224,12 +217,12 @@ function App() {
             } 
         }); 
         return Array.from(locations).sort(); 
-    }, [allData]);
+    }, []); // Data is static, so no dependency needed
     
     const handleSearch = (from, to) => { 
         const fromQuery = from.toLowerCase().trim(); 
         const toQuery = to.toLowerCase().trim(); 
-        const foundRoute = allData.find(r => r.from.toLowerCase() === fromQuery && r.to.toLowerCase() === toQuery); 
+        const foundRoute = travelData.find(r => r.from.toLowerCase() === fromQuery && r.to.toLowerCase() === toQuery); 
         setResults(foundRoute || { type: 'none' }); 
         setSortBy(null); 
         setEcoFriendlyOnly(false); 
