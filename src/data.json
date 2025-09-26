@@ -1,0 +1,136 @@
+[
+  {
+    "type": "direct",
+    "from": "Trivandrum",
+    "to": "Kochi",
+    "options": [
+      {
+        "mode": "Train",
+        "time": "3 hours 15 minutes",
+        "cost": 150,
+        "provider": "Indian Railways",
+        "ecoFriendly": true
+      },
+      {
+        "mode": "Bus",
+        "time": "5 hours",
+        "cost": 300,
+        "provider": "KSRTC",
+        "ecoFriendly": true
+      },
+      {
+        "mode": "Flight",
+        "time": "1 hour",
+        "cost": 2200,
+        "provider": "Air India",
+        "ecoFriendly": false
+      },
+      {
+        "mode": "Car",
+        "time": "4 hours 30 minutes",
+        "cost": 3500,
+        "provider": "Uber",
+        "ecoFriendly": false
+      }
+    ]
+  },
+  {
+    "type": "direct",
+    "from": "Kochi",
+    "to": "Munnar",
+    "options": [
+      {
+        "mode": "Bus",
+        "time": "4 hours 30 minutes",
+        "cost": 250,
+        "provider": "KSRTC",
+        "ecoFriendly": true
+      },
+      {
+        "mode": "Car",
+        "time": "3 hours 45 minutes",
+        "cost": 2500,
+        "provider": "Uber",
+        "ecoFriendly": false
+      }
+    ]
+  },
+  {
+    "type": "direct",
+    "from": "Trivandrum",
+    "to": "Bangalore",
+    "options": [
+        {
+            "mode": "Train",
+            "time": "16 hours",
+            "cost": 750,
+            "provider": "Indian Railways",
+            "ecoFriendly": true
+        },
+        {
+            "mode": "Bus",
+            "time": "14 hours",
+            "cost": 1200,
+            "provider": "KSRTC",
+            "ecoFriendly": true
+        },
+        {
+            "mode": "Flight",
+            "time": "1 hour 15 minutes",
+            "cost": 4500,
+            "provider": "Air India",
+            "ecoFriendly": false
+        }
+    ]
+  },
+  {
+    "type": "connected",
+    "from": "Trivandrum Central",
+    "to": "Technopark",
+    "totalTime": "55 minutes",
+    "totalCost": 62,
+    "legs": [
+      {
+        "mode": "Bus",
+        "provider": "KSRTC",
+        "time": "25 minutes",
+        "cost": 12,
+        "from": "Trivandrum Central",
+        "to": "Pattom"
+      },
+      {
+        "mode": "Auto",
+        "provider": "Uber",
+        "time": "15 minutes",
+        "cost": 50,
+        "from": "Pattom",
+        "to": "Technopark"
+      }
+    ]
+  },
+  {
+    "type": "connected",
+    "from": "Kochi",
+    "to": "Wonderla",
+    "totalTime": "1 hour 15 minutes",
+    "totalCost": 120,
+    "legs": [
+      {
+        "mode": "Train",
+        "provider": "Indian Railways",
+        "time": "45 minutes",
+        "cost": 40,
+        "from": "Kochi",
+        "to": "Aluva"
+      },
+      {
+        "mode": "Bus",
+        "provider": "KSRTC",
+        "time": "30 minutes",
+        "cost": 80,
+        "from": "Aluva",
+        "to": "Wonderla"
+      }
+    ]
+  }
+]
