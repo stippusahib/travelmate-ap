@@ -8,8 +8,8 @@ const modeLogos = { 'Bus': '/bus.png', 'Train': '/train.png', 'Car': '/uber.png'
 const parseDuration = (timeStr) => { 
     if (!timeStr) return 0; 
     let totalMinutes = 0; 
-    const hoursMatch = timeStr.match(/(\d+)\s*hour/); 
-    const minutesMatch = timeStr.match(/(\d+)\s*minute/); 
+    const hoursMatch = timeStr.match(/(\d+)\s*h/);
+    const minutesMatch = timeStr.match(/(\d+)\s*m/); 
     if (hoursMatch) totalMinutes += parseInt(hoursMatch[1], 10) * 60; 
     if (minutesMatch) totalMinutes += parseInt(minutesMatch[1], 10); 
     return totalMinutes; 
@@ -30,7 +30,6 @@ const AutocompleteInput = ({ value, onChange, placeholder, label, allLocations }
 
     const suggestions = useMemo(() => {
       if (!value) return allLocations;
-      // FIX: Changed filter logic from '.includes()' to '.startsWith()' for better sorting
       return allLocations.filter(loc => loc.toLowerCase().startsWith(value.toLowerCase()));
     }, [value, allLocations]);
 
@@ -147,8 +146,9 @@ const ResultCard = ({ result }) => (
         <div className="card-content"> 
             <img src={modeLogos[result.mode] || modeLogos['Default']} alt={result.mode} className="provider-logo" onError={handleImageError} /> 
             <div className="trip-details"> 
-                <div className="mode">{result.mode}</div> 
-                <div className="sub">{result.provider}</div> 
+                {/* ENHANCEMENT: Display the specific name (e.g., train name) if available */}
+                <div className="mode">{result.name || result.mode}</div> 
+                <div className="sub">{result.name ? `${result.mode} • ${result.provider}` : result.provider}</div> 
             </div> 
             <div className="trip-meta"> 
                 <div className="time">{result.time}</div> 
