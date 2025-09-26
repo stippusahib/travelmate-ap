@@ -93,7 +93,7 @@ const AutocompleteInput = ({ value, onChange, placeholder, label, allLocations }
 
 const FilterControls = ({ onSort, currentSort, onToggleEco, isEco }) => (
     <div className="filter-controls">
-        <button onClick={() => onSort('cost')} className={`filter-button ${currentSort === 'cost' ? 'active' : ''}`}>Cheapest</button>
+        <button onClick={() => onSort('cost')} className={`filter-button ${currentSort === 'cost' ? 'active' : ''}`}>Price: Low to High</button>
         <button onClick={() => onSort('time')} className={`filter-button ${currentSort === 'time' ? 'active' : ''}`}>Fastest</button>
         <button onClick={onToggleEco} className={`filter-button ${isEco ? 'active' : ''}`}>Eco-Friendly</button>
     </div>
@@ -118,7 +118,6 @@ const SearchForm = ({ onSearch, allLocations, onSort, currentSort, onToggleEco, 
             <form onSubmit={handleSubmit}>
                 <div className="search-form-grid">
                     <AutocompleteInput label="From" value={from} onChange={setFrom} placeholder="Select departure city" allLocations={allLocations} />
-                    {/* FIX: Wrapped icon in a span for stable animation */}
                     <button type="button" className="swap-button" onClick={handleSwap} title="Swap locations">
                         <span>&#8644;</span>
                     </button>
@@ -169,7 +168,7 @@ const MultiLegResultCard = ({ result }) => {
     <div className="multi-leg-card">
         <div className="multi-leg-header" onClick={() => setIsExpanded(!isExpanded)}>
             <div className="header-content">
-                <h3>Connected Trip Plan</h3>
+                <h3>Trip with Connections</h3>
                 <div className="multi-leg-summary">
                     <span>Total Time: {result.totalTime}</span>
                     <span>Total Cost: &#8377;{result.totalCost}</span>
@@ -202,7 +201,7 @@ const MultiLegResultCard = ({ result }) => {
 
 function App() {
     const [isLoading, setIsLoading] = useState(true);
-    const [results, setResults] = useState([]); // Default to an empty array
+    const [results, setResults] = useState([]);
     const [hasSearched, setHasSearched] = useState(false);
     const [isLightMode, setIsLightMode] = useState(false);
     const [sortBy, setSortBy] = useState(null);
@@ -236,7 +235,7 @@ function App() {
         const toQuery = to.toLowerCase().trim();
         const foundRoutes = travelData.filter(r => r.from.toLowerCase() === fromQuery && r.to.toLowerCase() === toQuery);
         setResults(foundRoutes);
-        setHasSearched(true); // Mark that a search has been performed
+        setHasSearched(true);
         setSortBy(null);
         setEcoFriendlyOnly(false);
     };
@@ -258,7 +257,6 @@ function App() {
         if (ecoFriendlyOnly) {
             allOptions = allOptions.filter(opt => {
                 if (opt.type === 'direct') return opt.ecoFriendly;
-                // For connected trips, check if all legs are eco-friendly
                 if (opt.type === 'connected') return opt.legs.every(leg => leg.ecoFriendly);
                 return false;
             });
@@ -295,7 +293,7 @@ function App() {
                     currentSort={sortBy}
                     onToggleEco={() => setEcoFriendlyOnly(prev => !prev)}
                     isEco={ecoFriendlyOnly}
-                    showFilters={results.length > 0} // FIX: Show filters if there are any results
+                    showFilters={results.length > 0}
                 />
                 
                 {hasSearched && (
