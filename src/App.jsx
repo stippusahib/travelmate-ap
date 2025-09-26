@@ -8,7 +8,6 @@ const modeLogos = { 'Bus': '/bus.png', 'Train': '/train.png', 'Car': '/uber.png'
 const parseDuration = (timeStr) => {
     if (!timeStr) return 0;
     let totalMinutes = 0;
-    // Updated regex to handle "hours", "h", "minutes", "m"
     const hoursMatch = timeStr.match(/(\d+)\s*(hours|hour|h)/);
     const minutesMatch = timeStr.match(/(\d+)\s*(minutes|minute|m)/);
     if (hoursMatch) totalMinutes += parseInt(hoursMatch[1], 10) * 60;
@@ -131,7 +130,7 @@ const SearchForm = ({ onSearch, allLocations, onSort, currentSort, onToggleEco, 
                             value={journeyDate}
                             min={new Date().toISOString().split('T')[0]}
                             onChange={e => setJourneyDate(e.target.value)}
-                            className="search-input"
+                            className="search-input date-input"
                         />
                      </div>
                 </div>
