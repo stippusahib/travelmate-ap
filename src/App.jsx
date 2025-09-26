@@ -8,8 +8,9 @@ const modeLogos = { 'Bus': '/bus.png', 'Train': '/train.png', 'Car': '/uber.png'
 const parseDuration = (timeStr) => {
     if (!timeStr) return 0;
     let totalMinutes = 0;
-    const hoursMatch = timeStr.match(/(\d+)\s*h/);
-    const minutesMatch = timeStr.match(/(\d+)\s*m/);
+    // Updated regex to handle "hours", "h", "minutes", "m"
+    const hoursMatch = timeStr.match(/(\d+)\s*(hours|hour|h)/);
+    const minutesMatch = timeStr.match(/(\d+)\s*(minutes|minute|m)/);
     if (hoursMatch) totalMinutes += parseInt(hoursMatch[1], 10) * 60;
     if (minutesMatch) totalMinutes += parseInt(minutesMatch[1], 10);
     return totalMinutes;
@@ -65,7 +66,6 @@ const AutocompleteInput = ({ value, onChange, placeholder, label, allLocations }
     };
 
     return (
-        // FIX: Wrapped the className expression in backticks (`) to create a valid template literal
         <div className={`input-group ${showSuggestions ? 'is-active' : ''}`} ref={wrapperRef}>
             <label>{label}</label>
             <div className="input-wrapper">
@@ -118,7 +118,10 @@ const SearchForm = ({ onSearch, allLocations, onSort, currentSort, onToggleEco, 
             <form onSubmit={handleSubmit}>
                 <div className="search-form-grid">
                     <AutocompleteInput label="From" value={from} onChange={setFrom} placeholder="Select departure city" allLocations={allLocations} />
-                    <button type="button" className="swap-button" onClick={handleSwap} title="Swap locations">&#8644;</button>
+                    {/* FIX: Wrapped icon in a span for stable animation */}
+                    <button type="button" className="swap-button" onClick={handleSwap} title="Swap locations">
+                        <span>&#8644;</span>
+                    </button>
                     <AutocompleteInput label="To" value={to} onChange={setTo} placeholder="Select arrival city" allLocations={allLocations} />
                 </div>
                 <div className="date-picker-grid">
@@ -159,37 +162,48 @@ const ResultCard = ({ result }) => (
     </div>
 );
 
-const MultiLegResultCard = ({ result }) => (
+const MultiLegResultCard = ({ result }) => {
+    const [isExpanded, setIsExpanded] = useState(false);
+
+    return (
     <div className="multi-leg-card">
-        <div className="multi-leg-header">
-            <h3>Connected Trip Plan</h3>
-            <div className="multi-leg-summary">
-                <span>Total Time: {result.totalTime}</span>
-                <span>Total Cost: &#8377;{result.totalCost}</span>
-            </div>
-        </div>
-        <div className="multi-leg-body">
-            {result.legs.map((leg, index) => (
-                <div className="leg" key={index}>
-                    <img src={modeLogos[leg.mode] || modeLogos['Default']} alt={leg.mode} className="provider-logo" onError={handleImageError} />
-                    <div className="trip-details">
-                        <div className="mode">{leg.from} &rarr; {leg.to}</div>
-                        <div className="sub">{leg.mode} via {leg.provider}</div>
-                    </div>
-                    <div className="trip-meta">
-                        <div className="time">{leg.time}</div>
-                        <div className="cost">&#8377;{leg.cost}</div>
-                        {leg.mode !== 'Auto' && <button className="book-button">Book Now</button>}
-                    </div>
+        <div className="multi-leg-header" onClick={() => setIsExpanded(!isExpanded)}>
+            <div className="header-content">
+                <h3>Connected Trip Plan</h3>
+                <div className="multi-leg-summary">
+                    <span>Total Time: {result.totalTime}</span>
+                    <span>Total Cost: &#8377;{result.totalCost}</span>
                 </div>
-            ))}
+            </div>
+            <span className={`expand-arrow ${isExpanded ? 'open' : ''}`}>&#9660;</span>
         </div>
+        {isExpanded && (
+            <div className="multi-leg-body">
+                {result.legs.map((leg, index) => (
+                    <div className="leg" key={index}>
+                        <img src={modeLogos[leg.mode] || modeLogos['Default']} alt={leg.mode} className="provider-logo" onError={handleImageError} />
+                        <div className="trip-details">
+                            <div className="mode">{leg.from} &rarr; {leg.to}</div>
+                            <div className="sub">{leg.mode} via {leg.provider}</div>
+                        </div>
+                        <div className="trip-meta">
+                            <div className="time">{leg.time}</div>
+                            <div className="cost">&#8377;{leg.cost}</div>
+                            {leg.mode !== 'Auto' && <button className="book-button">Book Now</button>}
+                        </div>
+                    </div>
+                ))}
+            </div>
+        )}
     </div>
-);
+    );
+};
+
 
 function App() {
     const [isLoading, setIsLoading] = useState(true);
-    const [results, setResults] = useState(null);
+    const [results, setResults] = useState([]); // Default to an empty array
+    const [hasSearched, setHasSearched] = useState(false);
     const [isLightMode, setIsLightMode] = useState(false);
     const [sortBy, setSortBy] = useState(null);
     const [ecoFriendlyOnly, setEcoFriendlyOnly] = useState(false);
@@ -220,32 +234,50 @@ function App() {
     const handleSearch = (from, to) => {
         const fromQuery = from.toLowerCase().trim();
         const toQuery = to.toLowerCase().trim();
-        const foundRoute = travelData.find(r => r.from.toLowerCase() === fromQuery && r.to.toLowerCase() === toQuery);
-        setResults(foundRoute || { type: 'none' });
+        const foundRoutes = travelData.filter(r => r.from.toLowerCase() === fromQuery && r.to.toLowerCase() === toQuery);
+        setResults(foundRoutes);
+        setHasSearched(true); // Mark that a search has been performed
         setSortBy(null);
         setEcoFriendlyOnly(false);
     };
 
     const handleSort = (key) => { setSortBy(prev => (prev === key ? null : key)); };
 
-    const displayedResults = useMemo(() => {
-        if (!results || results.type !== 'direct') { return results; }
-        let processedOptions = [...results.options];
-        if (ecoFriendlyOnly) { processedOptions = processedOptions.filter(opt => opt.ecoFriendly); }
-        if (sortBy === 'cost') { processedOptions.sort((a, b) => a.cost - b.cost); }
-        else if (sortBy === 'time') { processedOptions.sort((a, b) => parseDuration(a.time) - parseDuration(b.time)); }
-        return { ...results, options: processedOptions };
-    }, [results, sortBy, ecoFriendlyOnly]);
+    const processedResults = useMemo(() => {
+        if (!results || results.length === 0) return [];
 
-    const renderResults = () => {
-        if (!displayedResults) return null;
-        switch (displayedResults.type) {
-            case 'direct': return displayedResults.options.map((option, index) => <ResultCard key={index} result={option} />);
-            case 'connected': return <MultiLegResultCard result={displayedResults} />;
-            case 'none': return <div className="result-card"><div className="card-content" style={{display:'block', color: 'var(--text-color)'}}>No direct or connected routes found for this journey.</div></div>;
-            default: return null;
+        let allOptions = [];
+        results.forEach((route, routeIndex) => {
+            if (route.type === 'direct') {
+                route.options.forEach(opt => allOptions.push({ ...opt, type: 'direct', id: `d-${routeIndex}-${opt.name}` }));
+            } else if (route.type === 'connected') {
+                allOptions.push({ ...route, type: 'connected', id: `c-${routeIndex}` });
+            }
+        });
+
+        if (ecoFriendlyOnly) {
+            allOptions = allOptions.filter(opt => {
+                if (opt.type === 'direct') return opt.ecoFriendly;
+                // For connected trips, check if all legs are eco-friendly
+                if (opt.type === 'connected') return opt.legs.every(leg => leg.ecoFriendly);
+                return false;
+            });
         }
-    };
+        
+        if (sortBy) {
+            allOptions.sort((a, b) => {
+                const costA = a.type === 'direct' ? a.cost : a.totalCost;
+                const costB = b.type === 'direct' ? b.cost : b.totalCost;
+                const timeA = parseDuration(a.type === 'direct' ? a.time : a.totalTime);
+                const timeB = parseDuration(b.type === 'direct' ? b.time : b.totalTime);
+
+                if (sortBy === 'cost') return costA - costB;
+                if (sortBy === 'time') return timeA - timeB;
+                return 0;
+            });
+        }
+        return allOptions;
+    }, [results, sortBy, ecoFriendlyOnly]);
 
     if (isLoading) {
       return <LoadingScreen />;
@@ -263,12 +295,31 @@ function App() {
                     currentSort={sortBy}
                     onToggleEco={() => setEcoFriendlyOnly(prev => !prev)}
                     isEco={ecoFriendlyOnly}
-                    showFilters={results && results.type === 'direct'}
+                    showFilters={results.length > 0} // FIX: Show filters if there are any results
                 />
-                {results && (
+                
+                {hasSearched && (
                     <section className="results-section">
                         <h2>Available Options</h2>
-                        <div className="results-container"> {renderResults()} </div>
+                        <div className="results-container">
+                            {processedResults.length > 0 ? (
+                                processedResults.map((result) => {
+                                    if (result.type === 'direct') {
+                                        return <ResultCard key={result.id} result={result} />;
+                                    }
+                                    if (result.type === 'connected') {
+                                        return <MultiLegResultCard key={result.id} result={result} />;
+                                    }
+                                    return null;
+                                })
+                            ) : (
+                                <div className="result-card">
+                                    <div className="card-content" style={{display:'block', color: 'var(--text-color)'}}>
+                                        No routes found for this journey.
+                                    </div>
+                                </div>
+                            )}
+                        </div>
                     </section>
                 )}
             </main>
