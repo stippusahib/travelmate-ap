@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
-import './App.css'; // Import the separated stylesheet
-import travelData from './data.json'; // FIX: Import data directly from the src folder
+import './App.css';
+import travelData from './data.json';
 
 // --- Helper Functions & Constants ---
 const modeLogos = { 'Bus': '/bus.png', 'Train': '/train.png', 'Car': '/uber.png', 'Auto': '/uber.png', 'Flight': '/plane.png', 'Metro': '/metro.png', 'Default': '/logo.png' };
@@ -30,7 +30,8 @@ const AutocompleteInput = ({ value, onChange, placeholder, label, allLocations }
 
     const suggestions = useMemo(() => {
       if (!value) return allLocations;
-      return allLocations.filter(loc => loc.toLowerCase().includes(value.toLowerCase()));
+      // FIX: Changed filter logic from '.includes()' to '.startsWith()' for better sorting
+      return allLocations.filter(loc => loc.toLowerCase().startsWith(value.toLowerCase()));
     }, [value, allLocations]);
 
     useEffect(() => {
@@ -65,7 +66,6 @@ const AutocompleteInput = ({ value, onChange, placeholder, label, allLocations }
     };
     
     return (
-        // FIX: Added 'is-active' class when suggestions are shown to control z-index
         <div className={`input-group ${showSuggestions ? 'is-active' : ''}`} ref={wrapperRef}>
             <label>{label}</label>
             <div className="input-wrapper">
@@ -102,11 +102,10 @@ const FilterControls = ({ onSort, currentSort, onToggleEco, isEco }) => (
 const SearchForm = ({ onSearch, allLocations, onSort, currentSort, onToggleEco, isEco, showFilters }) => {
     const [from, setFrom] = useState('');
     const [to, setTo] = useState('');
-    const [journeyDate, setJourneyDate] = useState('2025-09-26');
+    const [journeyDate, setJourneyDate] = useState('');
     const handleSubmit = (e) => { e.preventDefault(); onSearch(from, to); };
     const handleSwap = () => { setFrom(to); setTo(from); };
     
-    // Set initial date based on current date, but format it correctly
     useEffect(() => {
         const today = new Date();
         const offset = today.getTimezoneOffset();
@@ -189,17 +188,16 @@ const MultiLegResultCard = ({ result }) => (
 );
 
 function App() {
-    const [isLoading, setIsLoading] = useState(true); // Used for aesthetic loading screen
+    const [isLoading, setIsLoading] = useState(true);
     const [results, setResults] = useState(null);
     const [isLightMode, setIsLightMode] = useState(false);
     const [sortBy, setSortBy] = useState(null);
     const [ecoFriendlyOnly, setEcoFriendlyOnly] = useState(false);
 
-    // Effect for the initial loading screen animation
     useEffect(() => {
         setTimeout(() => {
             setIsLoading(false);
-        }, 750); // A short delay for a smooth entrance
+        }, 750);
     }, []);
 
     useEffect(() => { document.body.classList.toggle('light-mode', isLightMode); }, [isLightMode]);
@@ -217,7 +215,7 @@ function App() {
             } 
         }); 
         return Array.from(locations).sort(); 
-    }, []); // Data is static, so no dependency needed
+    }, []);
     
     const handleSearch = (from, to) => { 
         const fromQuery = from.toLowerCase().trim(); 
