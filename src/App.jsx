@@ -46,7 +46,7 @@ const GlobalStyles = () => {
       .app-container { max-width: 800px; margin: 0 auto; padding: 24px; text-align: center; position: relative; }
       .app-header { display: block; margin-bottom: 32px; }
       .app-logo { 
-        height: 150px; 
+        height: 200px; 
         width: auto; 
         margin-bottom: 16px; 
       }
@@ -57,7 +57,7 @@ const GlobalStyles = () => {
 
       .form-section { background: var(--card-background); border-radius: 24px; padding: 32px; box-shadow: 0 10px 40px var(--card-shadow); text-align: left; animation: fadeInUp 0.5s ease; }
       .search-form-grid { display: grid; grid-template-columns: 1fr; gap: 0; margin-bottom: 16px; position: relative; }
-      .input-group { position: relative; text-align: left; z-index: 2; } 
+      .input-group { position: relative; text-align: left; } 
       .input-group:first-of-type { margin-bottom: 32px; }
       .input-group label { display: block; font-weight: 500; font-size: 0.9rem; margin-bottom: 8px; color: var(--text-color-light); }
       .search-input { width: 100%; padding: 14px; font-size: 1rem; border: 1px solid var(--border-color); border-radius: 12px; background-color: var(--background-color); color: var(--text-color); transition: all 0.2s ease-in-out; }
@@ -287,4 +287,3 @@ function App() {
 }
 
 export default App;
-
