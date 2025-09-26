@@ -60,7 +60,7 @@ body.light-mode .theme-switcher:hover { background: #e2e8f0; }
 .form-section { background: var(--card-background); border-radius: 24px; padding: 32px; box-shadow: var(--card-shadow); text-align: left; animation: fadeInUp 0.5s ease; backdrop-filter: blur(15px); border: 1px solid var(--card-border); }
 .search-form-grid { display: grid; grid-template-columns: 1fr; gap: 0; margin-bottom: 16px; position: relative; }
 
-.input-group { position: relative; text-align: left; z-index: 1; } 
+.input-group { position: relative; text-align: left; z-index: 1; }
 .input-group.is-active { z-index: 10; }
 .input-group:first-of-type { margin-bottom: 32px; }
 .input-group label { display: block; font-weight: 500; font-size: 0.9rem; margin-bottom: 8px; color: var(--text-color-muted); }
@@ -72,8 +72,10 @@ body.light-mode .theme-switcher:hover { background: #e2e8f0; }
 .input-arrow { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: var(--text-color-muted); transition: transform 0.2s ease; font-size: 20px; }
 .input-arrow.open { transform: translateY(-50%) rotate(180deg); }
 
-.swap-button { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); margin-top: -14px; height: 40px; width: 40px; cursor: pointer; border-radius: 50%; border: 1px solid var(--card-border); background: var(--card-background); backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; z-index: 5; color: var(--text-color); }
-.swap-button:hover { transform: translate(-50%, -50%) rotate(180deg) scale(1.1); background: var(--primary-color); color: white; }
+.swap-button { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); margin-top: -14px; height: 40px; width: 40px; cursor: pointer; border-radius: 50%; border: 1px solid var(--card-border); background: var(--card-background); backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center; z-index: 5; color: var(--text-color); transition: background-color 0.2s ease; }
+.swap-button span { display: inline-block; transition: transform 0.2s ease; }
+.swap-button:hover { background: var(--primary-color); color: white; }
+.swap-button:hover span { transform: rotate(180deg) scale(1.1); }
 
 .date-picker-grid { display: grid; grid-template-columns: 1fr; margin-bottom: 24px; }
 
@@ -81,7 +83,6 @@ body.light-mode .theme-switcher:hover { background: #e2e8f0; }
 .search-button:hover { background-position: right center; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0, 0.3); }
 
 .filter-controls { display: flex; gap: 12px; margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--card-border); flex-wrap: wrap; }
-/* FIX: Added base transform to prevent button from jumping on hover */
 .filter-button { padding: 8px 16px; border: 1px solid var(--card-border); background: transparent; color: var(--text-color-muted); cursor: pointer; border-radius: 20px; transition: all 0.2s ease; font-weight: 500; transform: translateY(0); }
 .filter-button:hover, .filter-button.active { background: var(--primary-color); color: #fff; border-color: var(--primary-color); transform: translateY(-2px); box-shadow: 0 2px 8px var(--focus-shadow); }
 
@@ -90,9 +91,7 @@ body.light-mode .theme-switcher:hover { background: #e2e8f0; }
 .suggestion-item.highlighted, .suggestion-item:hover { background-color: var(--primary-color-light); }
 
 .results-section { margin-top: 40px; text-align: left; }
-/* FIX: Use theme-aware --text-color for all headings to fix visibility */
 .results-section h2 { font-size: 1.5rem; margin-bottom: 16px; color: var(--text-color); }
-.multi-leg-header h3 { font-size: 1.2rem; text-align: left; color: var(--text-color); }
 
 .results-container { display: flex; flex-direction: column; gap: 16px; }
 
@@ -114,9 +113,15 @@ body.light-mode .provider-logo { background-color: #f8fafc; padding: 5px; border
 .book-button { font-size: 0.9rem; font-weight: 600; color: #fff; background-color: var(--accent-color); border: none; border-radius: 8px; cursor: pointer; padding: 8px 16px; transition: all 0.2s ease; }
 .book-button:hover { background-color: var(--accent-color-light); transform: scale(1.05); }
 
-.multi-leg-header { padding: 16px 20px; border-bottom: 1px solid var(--card-border); }
-.multi-leg-summary { display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--text-color-muted); margin-top: 4px; }
-.multi-leg-body { padding: 16px 20px; display: flex; flex-direction: column; gap: 16px; }
+.multi-leg-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--card-border); cursor: pointer;}
+.multi-leg-card .multi-leg-header:not(:last-child) { border-bottom: 1px solid var(--card-border); }
+.multi-leg-card .multi-leg-body { border-top: none; }
+.header-content { text-align: left; }
+.multi-leg-header h3 { font-size: 1.2rem; color: var(--text-color); }
+.multi-leg-summary { display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--text-color-muted); margin-top: 4px; gap: 16px; }
+.expand-arrow { font-size: 20px; color: var(--text-color-muted); transition: transform 0.3s ease; }
+.expand-arrow.open { transform: rotate(180deg); }
+.multi-leg-body { padding: 16px 20px; display: flex; flex-direction: column; gap: 16px; animation: fadeInUp 0.3s ease; }
 
 .leg { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 16px; }
 
@@ -125,6 +130,7 @@ body.light-mode .provider-logo { background-color: #f8fafc; padding: 5px; border
   .search-form-grid { grid-template-columns: 1fr auto 1fr; }
   .input-group:first-of-type { margin-bottom: 0; }
   .swap-button { position: static; margin-top: 28px; transform: none; }
+  .swap-button:hover span { transform: rotate(180deg) scale(1.1); }
 }
 
 @media (max-width: 767px) {
@@ -132,16 +138,13 @@ body.light-mode .provider-logo { background-color: #f8fafc; padding: 5px; border
   .form-section { padding: 24px; }
   .search-form-grid { grid-template-columns: 1fr; grid-template-rows: auto auto auto; row-gap: 16px; }
   .input-group:nth-of-type(1) { grid-row: 1; margin-bottom: 0; }
-  
-  .swap-button { 
-    grid-row: 2; 
+
+  /* FIX: Animate inner span instead of button to prevent jumping */
+  .swap-button {
+    grid-row: 2;
     justify-self: center;
     margin: -24px 0;
-    transform: rotate(0deg) scale(1);
-    transition: transform 0.3s ease;
-  }
-  .swap-button:hover { 
-    transform: rotate(180deg) scale(1.1); 
+    transform: none; /* Remove transform from button */
   }
 
   .input-group:nth-of-type(2) { grid-row: 3; }
