@@ -113,8 +113,8 @@ body.light-mode .provider-logo { background-color: #f8fafc; padding: 5px; border
 .book-button { font-size: 0.9rem; font-weight: 600; color: #fff; background-color: var(--accent-color); border: none; border-radius: 8px; cursor: pointer; padding: 8px 16px; transition: all 0.2s ease; }
 .book-button:hover { background-color: var(--accent-color-light); transform: scale(1.05); }
 
-.multi-leg-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--card-border); cursor: pointer;}
-.multi-leg-card .multi-leg-header:not(:last-child) { border-bottom: 1px solid var(--card-border); }
+.multi-leg-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; cursor: pointer;}
+.multi-leg-card .multi-leg-header { border-bottom: 1px solid var(--card-border); }
 .multi-leg-card .multi-leg-body { border-top: none; }
 .header-content { text-align: left; }
 .multi-leg-header h3 { font-size: 1.2rem; color: var(--text-color); }
@@ -139,12 +139,11 @@ body.light-mode .provider-logo { background-color: #f8fafc; padding: 5px; border
   .search-form-grid { grid-template-columns: 1fr; grid-template-rows: auto auto auto; row-gap: 16px; }
   .input-group:nth-of-type(1) { grid-row: 1; margin-bottom: 0; }
 
-  /* FIX: Animate inner span instead of button to prevent jumping */
   .swap-button {
     grid-row: 2;
     justify-self: center;
     margin: -24px 0;
-    transform: none; /* Remove transform from button */
+    transform: none;
   }
 
   .input-group:nth-of-type(2) { grid-row: 3; }
