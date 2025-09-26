@@ -6,6 +6,7 @@
     "options": [
       {
         "mode": "Train",
+        "name": "JAN SHATABDI",
         "time": "3 hours 15 minutes",
         "cost": 150,
         "provider": "Indian Railways",
@@ -60,27 +61,45 @@
     "from": "Trivandrum",
     "to": "Bangalore",
     "options": [
-        {
-            "mode": "Train",
-            "time": "16 hours",
-            "cost": 750,
-            "provider": "Indian Railways",
-            "ecoFriendly": true
-        },
-        {
-            "mode": "Bus",
-            "time": "14 hours",
-            "cost": 1200,
-            "provider": "KSRTC",
-            "ecoFriendly": true
-        },
-        {
-            "mode": "Flight",
-            "time": "1 hour 15 minutes",
-            "cost": 4500,
-            "provider": "Air India",
-            "ecoFriendly": false
-        }
+      {
+        "mode": "Train",
+        "name": "KCVL SMVB EXP",
+        "time": "16 hours",
+        "cost": 750,
+        "provider": "Indian Railways",
+        "ecoFriendly": true
+      },
+      {
+        "mode": "Bus",
+        "time": "14 hours",
+        "cost": 1200,
+        "provider": "KSRTC",
+        "ecoFriendly": true
+      },
+      {
+        "mode": "Flight",
+        "time": "1 hour 15 minutes",
+        "cost": 4500,
+        "provider": "Air India",
+        "ecoFriendly": false
+      }
+    ]
+  },
+  {
+    "type": "direct",
+    "from": "ERNAKULAM JN",
+    "to": "NEW DELHI",
+    "options": [
+        { "mode": "Train", "name": "KERALA EXPRESS", "time": "45h 15m", "cost": 1100, "provider": "Indian Railways", "ecoFriendly": true },
+        { "mode": "Train", "name": "RAJDHANI EXP", "time": "38h 30m", "cost": 3500, "provider": "Indian Railways", "ecoFriendly": true }
+    ]
+  },
+  {
+    "type": "direct",
+    "from": "Aluva",
+    "to": "Edapally",
+    "options": [
+        { "mode": "Metro", "name": "Kochi Metro", "time": "21m", "cost": 40, "provider": "KMRL", "ecoFriendly": true }
     ]
   },
   {
