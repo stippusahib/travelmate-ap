@@ -6,8 +6,7 @@
   --accent-color: #00C7BE;
   --accent-color-light: #00A9A1;
   --text-color: #FFFFFF;
-  --text-color-dark: #222B45;
-  --text-color-muted: #E0E0E0;
+  --text-color-muted: #a0aec0;
   --card-background: rgba(255, 255, 255, 0.1);
   --card-border: rgba(255, 255, 255, 0.25);
   --card-shadow: rgba(0, 0, 0, 0.1);
@@ -16,14 +15,12 @@
   --focus-shadow: rgba(94, 92, 230, 0.5);
 }
 
-/* FIX: Enhanced light mode UI for a more modern and less "boring" feel */
 body.light-mode {
   --primary-color: #4f46e5;
   --primary-color-light: #eef2ff;
   --accent-color: #059669;
   --accent-color-light: #047857;
   --text-color: #334155;
-  --text-color-dark: #0f172a;
   --text-color-muted: #64748b;
   --card-background: linear-gradient(145deg, #ffffff, #f9fafb);
   --card-border: #e2e8f0;
@@ -84,7 +81,8 @@ body.light-mode .theme-switcher:hover { background: #e2e8f0; }
 .search-button:hover { background-position: right center; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0, 0.3); }
 
 .filter-controls { display: flex; gap: 12px; margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--card-border); flex-wrap: wrap; }
-.filter-button { padding: 8px 16px; border: 1px solid var(--card-border); background: transparent; color: var(--text-color-muted); cursor: pointer; border-radius: 20px; transition: all 0.2s ease; font-weight: 500; }
+/* FIX: Added base transform to prevent button from jumping on hover */
+.filter-button { padding: 8px 16px; border: 1px solid var(--card-border); background: transparent; color: var(--text-color-muted); cursor: pointer; border-radius: 20px; transition: all 0.2s ease; font-weight: 500; transform: translateY(0); }
 .filter-button:hover, .filter-button.active { background: var(--primary-color); color: #fff; border-color: var(--primary-color); transform: translateY(-2px); box-shadow: 0 2px 8px var(--focus-shadow); }
 
 .autocomplete-suggestions { animation: fadeInUp 0.2s ease; position: absolute; background: var(--card-background); backdrop-filter: blur(15px); border: 1px solid var(--card-border); border-radius: 12px; box-shadow: 0 8px 24px var(--card-shadow); max-height: 180px; overflow-y: auto; z-index: 100; width: 100%; margin-top: 8px; }
@@ -92,8 +90,9 @@ body.light-mode .theme-switcher:hover { background: #e2e8f0; }
 .suggestion-item.highlighted, .suggestion-item:hover { background-color: var(--primary-color-light); }
 
 .results-section { margin-top: 40px; text-align: left; }
-.results-section h2 { font-size: 1.5rem; margin-bottom: 16px; color: var(--text-color-dark); }
-body.light-mode .results-section h2 { color: var(--text-color-dark); }
+/* FIX: Use theme-aware --text-color for all headings to fix visibility */
+.results-section h2 { font-size: 1.5rem; margin-bottom: 16px; color: var(--text-color); }
+.multi-leg-header h3 { font-size: 1.2rem; text-align: left; color: var(--text-color); }
 
 .results-container { display: flex; flex-direction: column; gap: 16px; }
 
@@ -107,7 +106,6 @@ body.light-mode .provider-logo { background-color: #f8fafc; padding: 5px; border
 
 .trip-details { text-align: left; }
 .trip-details .mode { font-weight: 600; font-size: 1.05rem; color: var(--text-color);}
-body.light-mode .trip-details .mode { color: var(--text-color-dark); }
 .trip-details .sub { font-size: 0.9rem; color: var(--text-color-muted); }
 .trip-meta { text-align: right; }
 .trip-meta .cost { font-weight: 700; font-size: 1.25rem; color: var(--accent-color); }
@@ -117,8 +115,6 @@ body.light-mode .trip-details .mode { color: var(--text-color-dark); }
 .book-button:hover { background-color: var(--accent-color-light); transform: scale(1.05); }
 
 .multi-leg-header { padding: 16px 20px; border-bottom: 1px solid var(--card-border); }
-.multi-leg-header h3 { font-size: 1.2rem; text-align: left; color: var(--text-color); }
-body.light-mode .multi-leg-header h3 { color: var(--text-color-dark); }
 .multi-leg-summary { display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--text-color-muted); margin-top: 4px; }
 .multi-leg-body { padding: 16px 20px; display: flex; flex-direction: column; gap: 16px; }
 
@@ -137,7 +133,6 @@ body.light-mode .multi-leg-header h3 { color: var(--text-color-dark); }
   .search-form-grid { grid-template-columns: 1fr; grid-template-rows: auto auto auto; row-gap: 16px; }
   .input-group:nth-of-type(1) { grid-row: 1; margin-bottom: 0; }
   
-  /* FIX: Added base transform and transition to prevent button from jumping on hover */
   .swap-button { 
     grid-row: 2; 
     justify-self: center;
