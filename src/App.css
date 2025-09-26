@@ -38,7 +38,6 @@ body {
 
 .app-container { max-width: 800px; margin: 0 auto; padding: 24px; text-align: center; position: relative; }
 .app-header { display: block; margin-bottom: 32px; }
-/* FIX: Dramatically increased logo size */
 .app-logo { 
   height: 150px; 
   width: auto; 
@@ -70,11 +69,8 @@ body.dark-mode .search-button { background-image: linear-gradient(to right, #3B8
 .filter-button:hover { background: var(--primary-color); color: #fff; border-color: var(--primary-color); transform: translateY(-2px); }
 .filter-button.active { background: var(--primary-color); color: #fff; border-color: var(--primary-color); box-shadow: 0 2px 8px var(--focus-shadow); }
 
-/* FIX: z-index ensures suggestions appear on top */
 .autocomplete-suggestions { position: absolute; background: var(--card-background); border: 1px solid var(--border-color); border-radius: 12px; box-shadow: 0 8px 24px var(--card-shadow); max-height: 180px; overflow-y: auto; z-index: 100; width: 100%; margin-top: 8px; }
-/* FIX: Increased padding for easier clicking */
 .suggestion-item { padding: 14px 16px; cursor: pointer; text-align: left; }
-/* NEW: Style for keyboard-highlighted item */
 .suggestion-item.highlighted { background-color: var(--background-color); }
 .suggestion-item:hover { background-color: var(--background-color); }
 
@@ -113,7 +109,6 @@ body.dark-mode .provider-logo { background-color: #fff; padding: 5px; }
   .swap-button { position: static; margin-top: 28px; transform: none; }
 }
 
-/* FIX: New stable grid layout for swap button on mobile */
 @media (max-width: 767px) {
   .app-header { margin-bottom: 16px; text-align: center; }
   .form-section { padding: 24px; }
