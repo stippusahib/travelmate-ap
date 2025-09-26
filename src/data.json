@@ -90,8 +90,8 @@
     "from": "ERNAKULAM JN",
     "to": "NEW DELHI",
     "options": [
-        { "mode": "Train", "name": "KERALA EXPRESS", "time": "45h 15m", "cost": 1100, "provider": "Indian Railways", "ecoFriendly": true },
-        { "mode": "Train", "name": "RAJDHANI EXP", "time": "38h 30m", "cost": 3500, "provider": "Indian Railways", "ecoFriendly": true }
+      { "mode": "Train", "name": "KERALA EXPRESS", "time": "45h 15m", "cost": 1100, "provider": "Indian Railways", "ecoFriendly": true },
+      { "mode": "Train", "name": "RAJDHANI EXP", "time": "38h 30m", "cost": 3500, "provider": "Indian Railways", "ecoFriendly": true }
     ]
   },
   {
@@ -150,6 +150,153 @@
         "from": "Aluva",
         "to": "Wonderla"
       }
+    ]
+  },
+  {
+    "type": "direct",
+    "from": "Pala",
+    "to": "Kuttikkanam",
+    "options": [
+       { "mode": "Bus", "name": "Pala-Kumily Bus", "time": "2 hours", "cost": 150, "provider": "KSRTC", "ecoFriendly": true }
+    ]
+  },
+  {
+    "type": "connected",
+    "from": "Pala",
+    "to": "Kuttikkanam",
+    "totalTime": "1 hour 40 minutes",
+    "totalCost": 109,
+    "legs": [
+      {
+        "mode": "Bus",
+        "provider": "KSRTC",
+        "time": "1 hour",
+        "cost": 56,
+        "from": "Pala",
+        "to": "Mundakayam"
+      },
+      {
+        "mode": "Bus",
+        "provider": "KSRTC",
+        "time": "40 minutes",
+        "cost": 53,
+        "from": "Mundakayam",
+        "to": "Kuttikkanam"
+      }
+    ]
+  },
+   {
+    "type": "connected",
+    "from": "Pala",
+    "to": "Kuttikkanam",
+    "totalTime": "2 hours 45 minutes",
+    "totalCost": 150,
+    "legs": [
+      {
+        "mode": "Bus",
+        "provider": "KSRTC",
+        "time": "45 minutes",
+        "cost": 47,
+        "from": "Pala",
+        "to": "Kottayam"
+      },
+      {
+        "mode": "Bus",
+        "provider": "KSRTC",
+        "time": "2 hours",
+        "cost": 103,
+        "from": "Kottayam",
+        "to": "Kuttikkanam"
+      }
+    ]
+  },
+  {
+    "type": "connected",
+    "from": "Pala",
+    "to": "Kuttikkanam",
+    "totalTime": "1 hour 45 minutes",
+    "totalCost": 135,
+    "legs": [
+      {
+        "mode": "Bus",
+        "provider": "KSRTC",
+        "time": "45 minutes",
+        "cost": 50,
+        "from": "Pala",
+        "to": "Kanjirappally"
+      },
+      {
+        "mode": "Bus",
+        "provider": "KSRTC",
+        "time": "30 minutes",
+        "cost": 43,
+        "from": "Kanjirappally",
+        "to": "Mundakayam"
+      },
+       {
+        "mode": "Bus",
+        "provider": "KSRTC",
+        "time": "30 minutes",
+        "cost": 42,
+        "from": "Mundakayam",
+        "to": "Kuttikkanam"
+      }
+    ]
+  },
+  {
+    "type": "connected",
+    "from": "SJCET, Choondacherry",
+    "to": "MBCCET, Kuttikkanam",
+    "totalTime": "2 hours 10 minutes",
+    "totalCost": 292,
+    "legs": [
+      { "mode": "Auto", "provider": "Auto", "time": "10 minutes", "cost": 100, "from": "SJCET, Choondacherry", "to": "Bharnanganam", "ecoFriendly": true },
+      { "mode": "Bus", "provider": "KSRTC/Private", "time": "10 minutes", "cost": 13, "from": "Bharnanganam", "to": "Pala KSRTC Stand", "ecoFriendly": true },
+      { "mode": "Bus", "provider": "KSRTC", "time": "1 hour", "cost": 56, "from": "Pala", "to": "Mundakayam", "ecoFriendly": true },
+      { "mode": "Bus", "provider": "KSRTC", "time": "40 minutes", "cost": 53, "from": "Mundakayam", "to": "Pallikunnu", "ecoFriendly": true },
+      { "mode": "Auto", "provider": "Auto", "time": "10 minutes", "cost": 70, "from": "Pallikunnu", "to": "MBCCET, Kuttikkanam", "ecoFriendly": true }
+    ]
+  },
+  {
+    "type": "connected",
+    "from": "SJCET, Choondacherry",
+    "to": "MBCCET, Kuttikkanam",
+    "totalTime": "3 hours 15 minutes",
+    "totalCost": 333,
+    "legs": [
+      { "mode": "Auto", "provider": "Auto", "time": "10 minutes", "cost": 100, "from": "SJCET, Choondacherry", "to": "Bharnanganam", "ecoFriendly": true },
+      { "mode": "Bus", "provider": "KSRTC/Private", "time": "10 minutes", "cost": 13, "from": "Bharnanganam", "to": "Pala KSRTC Stand", "ecoFriendly": true },
+      { "mode": "Bus", "provider": "KSRTC", "time": "45 minutes", "cost": 47, "from": "Pala", "to": "Kottayam", "ecoFriendly": true },
+      { "mode": "Bus", "provider": "KSRTC", "time": "2 hours", "cost": 103, "from": "Kottayam", "to": "Pallikunnu", "ecoFriendly": true },
+      { "mode": "Auto", "provider": "Auto", "time": "10 minutes", "cost": 70, "from": "Pallikunnu", "to": "MBCCET, Kuttikkanam", "ecoFriendly": true }
+    ]
+  },
+  {
+    "type": "connected",
+    "from": "SJCET, Choondacherry",
+    "to": "MBCCET, Kuttikkanam",
+    "totalTime": "2 hours 30 minutes",
+    "totalCost": 333,
+    "legs": [
+      { "mode": "Auto", "provider": "Auto", "time": "10 minutes", "cost": 100, "from": "SJCET, Choondacherry", "to": "Bharnanganam", "ecoFriendly": true },
+      { "mode": "Bus", "provider": "KSRTC/Private", "time": "10 minutes", "cost": 13, "from": "Bharnanganam", "to": "Pala KSRTC Stand", "ecoFriendly": true },
+      { "mode": "Bus", "provider": "KSRTC", "time": "2 hours", "cost": 150, "from": "Pala", "to": "Pallikunnu", "ecoFriendly": true },
+      { "mode": "Auto", "provider": "Auto", "time": "10 minutes", "cost": 70, "from": "Pallikunnu", "to": "MBCCET, Kuttikkanam", "ecoFriendly": true }
+    ]
+  },
+  {
+    "type": "connected",
+    "from": "SJCET, Choondacherry",
+    "to": "MBCCET, Kuttikkanam",
+    "totalTime": "2 hours 15 minutes",
+    "totalCost": 318,
+    "legs": [
+      { "mode": "Auto", "provider": "Auto", "time": "10 minutes", "cost": 100, "from": "SJCET, Choondacherry", "to": "Bharnanganam", "ecoFriendly": true },
+      { "mode": "Bus", "provider": "KSRTC/Private", "time": "10 minutes", "cost": 13, "from": "Bharnanganam", "to": "Pala KSRTC Stand", "ecoFriendly": true },
+      { "mode": "Bus", "provider": "KSRTC", "time": "45 minutes", "cost": 50, "from": "Pala", "to": "Kanjirappally", "ecoFriendly": true },
+      { "mode": "Bus", "provider": "KSRTC", "time": "30 minutes", "cost": 43, "from": "Kanjirappally", "to": "Mundakayam", "ecoFriendly": true },
+      { "mode": "Bus", "provider": "KSRTC", "time": "30 minutes", "cost": 42, "from": "Mundakayam", "to": "Pallikunnu", "ecoFriendly": true },
+      { "mode": "Auto", "provider": "Auto", "time": "10 minutes", "cost": 70, "from": "Pallikunnu", "to": "MBCCET, Kuttikkanam", "ecoFriendly": true }
     ]
   }
 ]
