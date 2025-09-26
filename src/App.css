@@ -79,6 +79,27 @@ body.light-mode .theme-switcher:hover { background: #e2e8f0; }
 
 .date-picker-grid { display: grid; grid-template-columns: 1fr; margin-bottom: 24px; }
 
+/* FIX: Specific styles for the date input to fix awkward appearance */
+.date-input {
+  padding: 14px;
+  position: relative;
+  text-align: left;
+}
+.date-input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+}
+.date-input::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+:root .date-input::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+}
+body.light-mode .date-input::-webkit-calendar-picker-indicator {
+    filter: none;
+}
+
 .search-button { width: 100%; padding: 16px; font-size: 1.1rem; font-weight: 600; color: #fff; background-image: linear-gradient(to right, var(--primary-color), var(--accent-color)); background-size: 200% auto; border: none; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0, 0.2); }
 .search-button:hover { background-position: right center; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0, 0.3); }
 
@@ -155,7 +176,6 @@ body.light-mode .provider-logo { background-color: #f8fafc; padding: 5px; border
 
   .input-group:nth-of-type(2) { grid-row: 3; }
 
-  /* FIX: New compact grid layout for mobile cards */
   .card-content {
     display: grid;
     grid-template-columns: auto 1fr;
@@ -181,7 +201,7 @@ body.light-mode .provider-logo { background-color: #f8fafc; padding: 5px; border
     display: flex;
     align-items: center;
     justify-content: space-between;
-    flex-wrap: wrap; /* Allow wrapping if needed */
+    flex-wrap: wrap;
     gap: 8px;
   }
   .trip-meta .time, .trip-meta .cost, .trip-meta .book-button {
@@ -191,7 +211,6 @@ body.light-mode .provider-logo { background-color: #f8fafc; padding: 5px; border
       font-size: 1.1rem;
   }
 
-  /* FIX: Compact layout for connected trip legs */
   .leg {
     grid-template-columns: auto 1fr;
     row-gap: 4px;
