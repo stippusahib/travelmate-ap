@@ -65,12 +65,8 @@ const AutocompleteInput = ({ value, onChange, placeholder, label, allLocations }
     };
 
     return (
-<<<<<<< HEAD
-        <div className={input-group ${showSuggestions ? 'is-active' : ''}} ref={wrapperRef}>
-=======
         // FIX: Wrapped the className expression in backticks (`) to create a valid template literal
         <div className={`input-group ${showSuggestions ? 'is-active' : ''}`} ref={wrapperRef}>
->>>>>>> b0226e92aed8d99a4f30403401b1198ed1182920
             <label>{label}</label>
             <div className="input-wrapper">
                 <input
@@ -80,12 +76,12 @@ const AutocompleteInput = ({ value, onChange, placeholder, label, allLocations }
                     onKeyDown={handleKeyDown}
                     placeholder={placeholder} className="search-input" autoComplete="off"
                 />
-                <span className={input-arrow ${showSuggestions ? 'open' : ''}} onClick={() => setShowSuggestions(!showSuggestions)}>&#9660;</span>
+                <span className={`input-arrow ${showSuggestions ? 'open' : ''}`} onClick={() => setShowSuggestions(!showSuggestions)}>&#9660;</span>
             </div>
             {showSuggestions && (
                 <div className="autocomplete-suggestions">
                     {suggestions.map((s, i) => (
-                        <div key={i} className={suggestion-item ${i === highlightedIndex ? 'highlighted' : ''}} onClick={() => handleSelect(s)} onMouseOver={() => setHighlightedIndex(i)}>
+                        <div key={i} className={`suggestion-item ${i === highlightedIndex ? 'highlighted' : ''}`} onClick={() => handleSelect(s)} onMouseOver={() => setHighlightedIndex(i)}>
                             {s}
                         </div>
                     ))}
@@ -95,21 +91,12 @@ const AutocompleteInput = ({ value, onChange, placeholder, label, allLocations }
     );
 };
 
-<<<<<<< HEAD
-const FilterControls = ({ onSort, currentSort, onToggleEco, isEco }) => ( 
-    <div className="filter-controls"> 
-        <button onClick={() => onSort('cost')} className={filter-button ${currentSort === 'cost' ? 'active' : ''}}>Cheapest</button> 
-        <button onClick={() => onSort('time')} className={filter-button ${currentSort === 'time' ? 'active' : ''}}>Fastest</button> 
-        <button onClick={onToggleEco} className={filter-button ${isEco ? 'active' : ''}}>Eco-Friendly</button> 
-    </div> 
-=======
 const FilterControls = ({ onSort, currentSort, onToggleEco, isEco }) => (
     <div className="filter-controls">
         <button onClick={() => onSort('cost')} className={`filter-button ${currentSort === 'cost' ? 'active' : ''}`}>Cheapest</button>
         <button onClick={() => onSort('time')} className={`filter-button ${currentSort === 'time' ? 'active' : ''}`}>Fastest</button>
         <button onClick={onToggleEco} className={`filter-button ${isEco ? 'active' : ''}`}>Eco-Friendly</button>
     </div>
->>>>>>> b0226e92aed8d99a4f30403401b1198ed1182920
 );
 
 const SearchForm = ({ onSearch, allLocations, onSort, currentSort, onToggleEco, isEco, showFilters }) => {
@@ -155,24 +142,6 @@ const SearchForm = ({ onSearch, allLocations, onSort, currentSort, onToggleEco, 
 
 const handleImageError = (e) => { e.currentTarget.src = '/logo.png'; e.currentTarget.onerror = null; };
 
-<<<<<<< HEAD
-const ResultCard = ({ result }) => ( 
-    <div className="result-card"> 
-        <div className="card-content"> 
-            <img src={modeLogos[result.mode] || modeLogos['Default']} alt={result.mode} className="provider-logo" onError={handleImageError} /> 
-            <div className="trip-details"> 
-                {/* ENHANCEMENT: Display the specific name (e.g., train name) if available */}
-                <div className="mode">{result.name || result.mode}</div> 
-                <div className="sub">{result.name ? ${result.mode} • ${result.provider} : result.provider}</div> 
-            </div> 
-            <div className="trip-meta"> 
-                <div className="time">{result.time}</div> 
-                <div className="cost">&#8377;{result.cost}</div> 
-                <button className="book-button">Book Now</button> 
-            </div> 
-        </div> 
-    </div> 
-=======
 const ResultCard = ({ result }) => (
     <div className="result-card">
         <div className="card-content">
@@ -188,7 +157,6 @@ const ResultCard = ({ result }) => (
             </div>
         </div>
     </div>
->>>>>>> b0226e92aed8d99a4f30403401b1198ed1182920
 );
 
 const MultiLegResultCard = ({ result }) => (
@@ -285,7 +253,7 @@ function App() {
 
     return (
         <div className="app-container">
-            <button className="theme-switcher" onClick={() => setIsLightMode(!isLightMode)} title="Toggle Theme"> {isLightMode ? '🌙' : '☀'} </button>
+            <button className="theme-switcher" onClick={() => setIsLightMode(!isLightMode)} title="Toggle Theme"> {isLightMode ? '🌙' : '☀️'} </button>
             <header className="app-header"> <img src="/logo.png" alt="TravelMate Logo" className="app-logo"/> </header>
             <main>
                 <SearchForm
