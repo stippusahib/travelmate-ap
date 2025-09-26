@@ -128,31 +128,6 @@
     ]
   },
   {
-    "type": "connected",
-    "from": "Kochi",
-    "to": "Wonderla",
-    "totalTime": "1 hour 15 minutes",
-    "totalCost": 120,
-    "legs": [
-      {
-        "mode": "Train",
-        "provider": "Indian Railways",
-        "time": "45 minutes",
-        "cost": 40,
-        "from": "Kochi",
-        "to": "Aluva"
-      },
-      {
-        "mode": "Bus",
-        "provider": "KSRTC",
-        "time": "30 minutes",
-        "cost": 80,
-        "from": "Aluva",
-        "to": "Wonderla"
-      }
-    ]
-  },
-  {
     "type": "direct",
     "from": "Pala",
     "to": "Kuttikkanam",
@@ -297,6 +272,51 @@
       { "mode": "Bus", "provider": "KSRTC", "time": "30 minutes", "cost": 43, "from": "Kanjirappally", "to": "Mundakayam", "ecoFriendly": true },
       { "mode": "Bus", "provider": "KSRTC", "time": "30 minutes", "cost": 42, "from": "Mundakayam", "to": "Pallikunnu", "ecoFriendly": true },
       { "mode": "Auto", "provider": "Auto", "time": "10 minutes", "cost": 70, "from": "Pallikunnu", "to": "MBCCET, Kuttikkanam", "ecoFriendly": true }
+    ]
+  },
+  {
+    "type": "connected",
+    "from": "Ernakulam South",
+    "to": "Wonderla",
+    "totalTime": "1 hour 11 minutes",
+    "totalCost": 78,
+    "legs": [
+      {
+        "mode": "Metro",
+        "provider": "Kochi Metro",
+        "time": "6 minutes",
+        "cost": 20,
+        "from": "Ernakulam South",
+        "to": "Kaloor",
+        "ecoFriendly": true
+      },
+      {
+        "mode": "Bus",
+        "provider": "KSRTC/Private",
+        "time": "40 minutes",
+        "cost": 30,
+        "from": "Kaloor",
+        "to": "Kakkanad",
+        "ecoFriendly": true
+      },
+      {
+        "mode": "Bus",
+        "provider": "KSRTC/Private",
+        "time": "17 minutes",
+        "cost": 13,
+        "from": "Kakkanad",
+        "to": "Pallikkara",
+        "ecoFriendly": true
+      },
+      {
+        "mode": "Bus",
+        "provider": "KSRTC/Private",
+        "time": "8 minutes",
+        "cost": 15,
+        "from": "Pallikkara",
+        "to": "Wonderla",
+        "ecoFriendly": true
+      }
     ]
   }
 ]
