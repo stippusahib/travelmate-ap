@@ -65,7 +65,7 @@ const AutocompleteInput = ({ value, onChange, placeholder, label, allLocations }
     };
     
     return (
-        <div className={`input-group ${showSuggestions ? 'is-active' : ''}`} ref={wrapperRef}>
+        <div className={input-group ${showSuggestions ? 'is-active' : ''}} ref={wrapperRef}>
             <label>{label}</label>
             <div className="input-wrapper">
                 <input
@@ -75,12 +75,12 @@ const AutocompleteInput = ({ value, onChange, placeholder, label, allLocations }
                     onKeyDown={handleKeyDown}
                     placeholder={placeholder} className="search-input" autoComplete="off"
                 />
-                <span className={`input-arrow ${showSuggestions ? 'open' : ''}`} onClick={() => setShowSuggestions(!showSuggestions)}>&#9660;</span>
+                <span className={input-arrow ${showSuggestions ? 'open' : ''}} onClick={() => setShowSuggestions(!showSuggestions)}>&#9660;</span>
             </div>
             {showSuggestions && (
                 <div className="autocomplete-suggestions">
                     {suggestions.map((s, i) => (
-                        <div key={i} className={`suggestion-item ${i === highlightedIndex ? 'highlighted' : ''}`} onClick={() => handleSelect(s)} onMouseOver={() => setHighlightedIndex(i)}>
+                        <div key={i} className={suggestion-item ${i === highlightedIndex ? 'highlighted' : ''}} onClick={() => handleSelect(s)} onMouseOver={() => setHighlightedIndex(i)}>
                             {s}
                         </div>
                     ))}
@@ -92,9 +92,9 @@ const AutocompleteInput = ({ value, onChange, placeholder, label, allLocations }
 
 const FilterControls = ({ onSort, currentSort, onToggleEco, isEco }) => ( 
     <div className="filter-controls"> 
-        <button onClick={() => onSort('cost')} className={`filter-button ${currentSort === 'cost' ? 'active' : ''}`}>Cheapest</button> 
-        <button onClick={() => onSort('time')} className={`filter-button ${currentSort === 'time' ? 'active' : ''}`}>Fastest</button> 
-        <button onClick={onToggleEco} className={`filter-button ${isEco ? 'active' : ''}`}>Eco-Friendly</button> 
+        <button onClick={() => onSort('cost')} className={filter-button ${currentSort === 'cost' ? 'active' : ''}}>Cheapest</button> 
+        <button onClick={() => onSort('time')} className={filter-button ${currentSort === 'time' ? 'active' : ''}}>Fastest</button> 
+        <button onClick={onToggleEco} className={filter-button ${isEco ? 'active' : ''}}>Eco-Friendly</button> 
     </div> 
 );
 
@@ -148,7 +148,7 @@ const ResultCard = ({ result }) => (
             <div className="trip-details"> 
                 {/* ENHANCEMENT: Display the specific name (e.g., train name) if available */}
                 <div className="mode">{result.name || result.mode}</div> 
-                <div className="sub">{result.name ? `${result.mode} • ${result.provider}` : result.provider}</div> 
+                <div className="sub">{result.name ? ${result.mode} • ${result.provider} : result.provider}</div> 
             </div> 
             <div className="trip-meta"> 
                 <div className="time">{result.time}</div> 
@@ -253,7 +253,7 @@ function App() {
     
     return (
         <div className="app-container">
-            <button className="theme-switcher" onClick={() => setIsLightMode(!isLightMode)} title="Toggle Theme"> {isLightMode ? '🌙' : '☀️'} </button>
+            <button className="theme-switcher" onClick={() => setIsLightMode(!isLightMode)} title="Toggle Theme"> {isLightMode ? '🌙' : '☀'} </button>
             <header className="app-header"> <img src="/logo.png" alt="TravelMate Logo" className="app-logo"/> </header>
             <main>
                 <SearchForm 
