@@ -45,7 +45,6 @@ const GlobalStyles = () => {
 
       .app-container { max-width: 800px; margin: 0 auto; padding: 24px; text-align: center; position: relative; }
       .app-header { display: block; margin-bottom: 32px; }
-      /* FIX: Dramatically increased logo size */
       .app-logo { 
         height: 150px; 
         width: auto; 
@@ -63,10 +62,10 @@ const GlobalStyles = () => {
       .input-group label { display: block; font-weight: 500; font-size: 0.9rem; margin-bottom: 8px; color: var(--text-color-light); }
       .search-input { width: 100%; padding: 14px; font-size: 1rem; border: 1px solid var(--border-color); border-radius: 12px; background-color: var(--background-color); color: var(--text-color); transition: all 0.2s ease-in-out; }
       .search-input:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 4px var(--focus-shadow); }
-
+      
       .swap-button { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); margin-top: -14px; height: 40px; width: 40px; cursor: pointer; border-radius: 50%; border: 1px solid var(--border-color); background: var(--card-background); display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; z-index: 5; }
       .swap-button:hover { transform: translate(-50%, -50%) rotate(180deg) scale(1.1); background: var(--primary-color); color: white; }
-
+      
       .date-picker-grid { display: grid; grid-template-columns: 1fr; margin-bottom: 24px; }
       .search-button { width: 100%; padding: 16px; font-size: 1.1rem; font-weight: 600; color: #fff; background-image: linear-gradient(to right, #0052D4, #4364F7, #6FB1FC); background-size: 200% auto; border: none; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0, 82, 212, 0.3); }
       .search-button:hover { background-position: right center; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 82, 212, 0.4); }
@@ -77,11 +76,8 @@ const GlobalStyles = () => {
       .filter-button:hover { background: var(--primary-color); color: #fff; border-color: var(--primary-color); transform: translateY(-2px); }
       .filter-button.active { background: var(--primary-color); color: #fff; border-color: var(--primary-color); box-shadow: 0 2px 8px var(--focus-shadow); }
 
-      /* FIX: z-index ensures suggestions appear on top */
       .autocomplete-suggestions { position: absolute; background: var(--card-background); border: 1px solid var(--border-color); border-radius: 12px; box-shadow: 0 8px 24px var(--card-shadow); max-height: 180px; overflow-y: auto; z-index: 100; width: 100%; margin-top: 8px; }
-      /* FIX: Increased padding for easier clicking */
       .suggestion-item { padding: 14px 16px; cursor: pointer; text-align: left; }
-      /* NEW: Style for keyboard-highlighted item */
       .suggestion-item.highlighted { background-color: var(--background-color); }
       .suggestion-item:hover { background-color: var(--background-color); }
 
@@ -161,8 +157,6 @@ const modeLogos = { 'Bus': '/bus.png', 'Train': '/train.png', 'Car': '/uber.png'
 const parseDuration = (timeStr) => { if (!timeStr) return 0; let totalMinutes = 0; const hoursMatch = timeStr.match(/(\d+)\s*hour/); const minutesMatch = timeStr.match(/(\d+)\s*minute/); if (hoursMatch) totalMinutes += parseInt(hoursMatch[1], 10) * 60; if (minutesMatch) totalMinutes += parseInt(minutesMatch[1], 10); return totalMinutes; };
 
 // --- Child Components ---
-
-// UPDATED: Autocomplete now handles keyboard events
 const AutocompleteInput = ({ value, onChange, placeholder, label, suggestions }) => {
     const [showSuggestions, setShowSuggestions] = useState(false);
     const [highlightedIndex, setHighlightedIndex] = useState(-1);
@@ -285,7 +279,7 @@ function App() {
             <button className="theme-switcher" onClick={() => setIsDarkMode(!isDarkMode)} title="Toggle Theme"> {isDarkMode ? '☀️' : '🌙'} </button>
             <header className="app-header"> <img src="/logo.png" alt="TravelMate Logo" className="app-logo"/> </header>
             <main>
-                <SearchForm onSearch={handleSearch} allLocations={allLocations} onSort={handleSort} currentSort={sortBy} onToggleEco={() => setEcoFriendlyOnly(prev => !prev)} isEco={isEco} showFilters={results && results.type === 'direct'} />
+                <SearchForm onSearch={handleSearch} allLocations={allLocations} onSort={handleSort} currentSort={sortBy} onToggleEco={() => setEcoFriendlyOnly(prev => !prev)} isEco={ecoFriendlyOnly} showFilters={results && results.type === 'direct'} />
                 {results && ( <section className="results-section"> <h2>Available Options</h2> <div className="results-container"> {renderResults()} </div> </section> )}
             </main>
         </div>
