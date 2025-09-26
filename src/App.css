@@ -16,20 +16,21 @@
   --focus-shadow: rgba(94, 92, 230, 0.5);
 }
 
+/* FIX: Redesigned entire light mode for a clean, professional UI */
 body.light-mode {
-  --primary-color: #0052D4;
-  --primary-color-light: rgba(0, 82, 212, 0.1);
+  --primary-color: #0062E6;
+  --primary-color-light: #F0F6FF;
   --accent-color: #10B981;
   --accent-color-light: #0d8a6a;
-  --text-color: #1A202C;
-  --text-color-dark: #1A202C;
-  --text-color-muted: #718096;
-  --card-background: rgba(255, 255, 255, 0.8);
-  --card-border: rgba(0, 0, 0, 0.1);
-  --card-shadow: rgba(45, 55, 72, 0.1);
-  --background-start: #F0F4F8;
-  --background-end: #D9E2EC;
-  --focus-shadow: rgba(0, 82, 212, 0.25);
+  --text-color: #334155;
+  --text-color-dark: #0F172A;
+  --text-color-muted: #64748B;
+  --card-background: #FFFFFF;
+  --card-border: #E2E8F0;
+  --card-shadow: rgba(100, 116, 139, 0.12);
+  --background-start: #F8FAFC;
+  --background-end: #EFF6FF;
+  --focus-shadow: rgba(0, 98, 230, 0.25);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -57,10 +58,16 @@ body {
 
 .theme-switcher { position: absolute; top: 32px; right: 32px; background: var(--card-background); backdrop-filter: blur(10px); border: 1px solid var(--card-border); color: var(--text-color); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease; z-index: 100; }
 .theme-switcher:hover { background: rgba(0,0,0,0.2); transform: scale(1.1); }
+body.light-mode .theme-switcher:hover { background: #E2E8F0; }
 
 .form-section { background: var(--card-background); border-radius: 24px; padding: 32px; box-shadow: 0 10px 40px var(--card-shadow); text-align: left; animation: fadeInUp 0.5s ease; backdrop-filter: blur(15px); border: 1px solid var(--card-border); }
 .search-form-grid { display: grid; grid-template-columns: 1fr; gap: 0; margin-bottom: 16px; position: relative; }
-.input-group { position: relative; text-align: left; } 
+
+/* FIX: Set a default z-index for input groups */
+.input-group { position: relative; text-align: left; z-index: 1; } 
+/* FIX: Raise the z-index of the active input group so its dropdown appears on top */
+.input-group.is-active { z-index: 10; }
+
 .input-group:first-of-type { margin-bottom: 32px; }
 .input-group label { display: block; font-weight: 500; font-size: 0.9rem; margin-bottom: 8px; color: var(--text-color-muted); }
 
@@ -88,7 +95,9 @@ body {
 .suggestion-item.highlighted, .suggestion-item:hover { background-color: var(--primary-color-light); }
 
 .results-section { margin-top: 40px; text-align: left; }
-.results-section h2 { font-size: 1.5rem; margin-bottom: 16px; color: var(--text-color); }
+.results-section h2 { font-size: 1.5rem; margin-bottom: 16px; color: var(--text-color-dark); }
+body.light-mode .results-section h2 { color: var(--text-color); }
+
 .results-container { display: flex; flex-direction: column; gap: 16px; }
 
 .result-card, .multi-leg-card { background: var(--card-background); backdrop-filter: blur(10px); border-radius: 16px; box-shadow: 0 4px 16px var(--card-shadow); border: 1px solid var(--card-border); transition: all 0.3s ease; animation: fadeInUp 0.5s ease backwards; }
@@ -99,6 +108,7 @@ body {
 
 .trip-details { text-align: left; }
 .trip-details .mode { font-weight: 600; font-size: 1.05rem; color: var(--text-color);}
+body.light-mode .trip-details .mode { color: var(--text-color-dark); }
 .trip-details .sub { font-size: 0.9rem; color: var(--text-color-muted); }
 .trip-meta { text-align: right; }
 .trip-meta .cost { font-weight: 700; font-size: 1.25rem; color: var(--accent-color); }
@@ -109,6 +119,7 @@ body {
 
 .multi-leg-header { padding: 16px 20px; border-bottom: 1px solid var(--card-border); }
 .multi-leg-header h3 { font-size: 1.2rem; text-align: left; color: var(--text-color); }
+body.light-mode .multi-leg-header h3 { color: var(--text-color-dark); }
 .multi-leg-summary { display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--text-color-muted); margin-top: 4px; }
 .multi-leg-body { padding: 16px 20px; display: flex; flex-direction: column; gap: 16px; }
 
