@@ -13,6 +13,8 @@
   --background-start: #191970;
   --background-end: #000033;
   --focus-shadow: rgba(94, 92, 230, 0.5);
+  --suggestion-card-bg: rgba(0, 199, 190, 0.1);
+  --suggestion-card-border: rgba(0, 199, 190, 0.3);
 }
 
 body.light-mode {
@@ -28,6 +30,8 @@ body.light-mode {
   --background-start: #f8fafc;
   --background-end: #e0e7ff;
   --focus-shadow: rgba(79, 70, 229, 0.25);
+  --suggestion-card-bg: #f0fdfa;
+  --suggestion-card-border: #99f6e4;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -78,27 +82,11 @@ body.light-mode .theme-switcher:hover { background: #e2e8f0; }
 .swap-button:hover span { transform: rotate(180deg) scale(1.1); }
 
 .date-picker-grid { display: grid; grid-template-columns: 1fr; margin-bottom: 24px; }
-
-/* FIX: Specific styles for the date input to fix awkward appearance */
-.date-input {
-  padding: 14px;
-  position: relative;
-  text-align: left;
-}
-.date-input::-webkit-calendar-picker-indicator {
-  cursor: pointer;
-  opacity: 0.6;
-  transition: opacity 0.2s ease;
-}
-.date-input::-webkit-calendar-picker-indicator:hover {
-  opacity: 1;
-}
-:root .date-input::-webkit-calendar-picker-indicator {
-    filter: invert(1);
-}
-body.light-mode .date-input::-webkit-calendar-picker-indicator {
-    filter: none;
-}
+.date-input { padding: 14px; position: relative; text-align: left; }
+.date-input::-webkit-calendar-picker-indicator { cursor: pointer; opacity: 0.6; transition: opacity 0.2s ease; }
+.date-input::-webkit-calendar-picker-indicator:hover { opacity: 1; }
+:root .date-input::-webkit-calendar-picker-indicator { filter: invert(1); }
+body.light-mode .date-input::-webkit-calendar-picker-indicator { filter: none; }
 
 .search-button { width: 100%; padding: 16px; font-size: 1.1rem; font-weight: 600; color: #fff; background-image: linear-gradient(to right, var(--primary-color), var(--accent-color)); background-size: 200% auto; border: none; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0, 0.2); }
 .search-button:hover { background-position: right center; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0, 0.3); }
@@ -111,19 +99,18 @@ body.light-mode .date-input::-webkit-calendar-picker-indicator {
 .suggestion-item { padding: 14px 16px; cursor: pointer; text-align: left; color: var(--text-color); }
 .suggestion-item.highlighted, .suggestion-item:hover { background-color: var(--primary-color-light); }
 
-.results-section { margin-top: 40px; text-align: left; }
-.results-section h2 { font-size: 1.5rem; margin-bottom: 16px; color: var(--text-color); }
+.results-section, .suggestions-section, .faq-section { margin-top: 48px; text-align: left; }
+.results-section h2, .suggestions-section h2, .faq-section h2 { font-size: 1.5rem; margin-bottom: 8px; color: var(--text-color); }
+.section-subtitle { font-size: 0.95rem; color: var(--text-color-muted); margin-bottom: 24px; }
+.results-container, .suggestions-container, .faq-container { display: flex; flex-direction: column; gap: 16px; }
 
-.results-container { display: flex; flex-direction: column; gap: 16px; }
-
-.result-card, .multi-leg-card { background: var(--card-background); backdrop-filter: blur(10px); border-radius: 16px; box-shadow: var(--card-shadow); border: 1px solid var(--card-border); transition: all 0.3s ease; animation: fadeInUp 0.5s ease backwards; }
+.result-card, .multi-leg-card { background: var(--card-background); backdrop-filter: blur(10px); border-radius: 16px; box-shadow: var(--card-shadow); border: 1px solid var(--card-border); transition: all 0.3s ease; }
 .result-card:hover, .multi-leg-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); border-color: var(--primary-color); }
 body.light-mode .result-card:hover, body.light-mode .multi-leg-card:hover { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.07), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
 
 .card-content { display: grid; grid-template-columns: auto 1fr auto; align-items: center; padding: 16px; gap: 16px; }
 .provider-logo { width: 45px; height: 45px; object-fit: contain; flex-shrink: 0; border-radius: 12px; }
 body.light-mode .provider-logo { background-color: #f8fafc; padding: 5px; border: 1px solid #e2e8f0; }
-
 .trip-details { text-align: left; }
 .trip-details .mode { font-weight: 600; font-size: 1.05rem; color: var(--text-color);}
 .trip-details .sub { font-size: 0.9rem; color: var(--text-color-muted); }
@@ -146,6 +133,32 @@ body.light-mode .provider-logo { background-color: #f8fafc; padding: 5px; border
 
 .leg { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 16px; }
 
+.suggestion-card { background: var(--suggestion-card-bg); border-radius: 16px; border: 1px solid var(--suggestion-card-border); padding: 16px; }
+.suggestion-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+.suggestion-route { font-weight: 600; font-size: 1.1rem; color: var(--text-color); display: flex; align-items: center; gap: 8px; }
+.route-arrow { color: var(--accent-color); }
+.suggest-button { font-size: 0.9rem; font-weight: 600; color: var(--accent-color); background: transparent; border: 1px solid var(--accent-color); border-radius: 8px; cursor: pointer; padding: 8px 16px; transition: all 0.2s ease; }
+.suggest-button:hover { background: var(--accent-color); color: white; }
+.suggestion-details { margin-top: 16px; text-align: left; color: var(--text-color-muted); animation: fadeInUp 0.3s ease; }
+.suggestion-details p { margin-bottom: 12px; }
+.suggestion-details ul { list-style-position: inside; padding-left: 4px; }
+
+.faq-item { border-bottom: 1px solid var(--card-border); }
+.faq-question { width: 100%; background: none; border: none; text-align: left; padding: 20px 0; font-size: 1.1rem; font-weight: 500; color: var(--text-color); cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+.faq-icon { font-size: 1.5rem; transition: transform 0.3s ease; font-weight: 300; }
+.faq-icon.open { transform: rotate(45deg); }
+.faq-answer { overflow: hidden; max-height: 0; transition: max-height 0.5s ease, padding 0.5s ease; }
+.faq-question + .faq-answer { padding: 0; }
+.faq-question:hover { color: var(--primary-color); }
+.faq-item .faq-question.active + .faq-answer, .faq-item .faq-question:focus + .faq-answer, .faq-item input:checked ~ .faq-answer { max-height: 300px; padding: 0 0 20px 0; }
+.faq-answer p { color: var(--text-color-muted); }
+
+.app-footer { margin-top: 64px; padding-top: 32px; border-top: 1px solid var(--card-border); color: var(--text-color-muted); text-align: center; }
+.footer-team { font-weight: 600; letter-spacing: 1px; }
+
+.fade-in-section { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+.fade-in-section.is-visible { opacity: 1; transform: translateY(0); }
+
 @media (min-width: 768px) {
   .app-logo { height: 200px; }
   .search-form-grid { grid-template-columns: 1fr auto 1fr; }
@@ -154,7 +167,6 @@ body.light-mode .provider-logo { background-color: #f8fafc; padding: 5px; border
   .swap-button:hover span { transform: rotate(180deg) scale(1.1); }
 }
 
-/* --- MOBILE RESPONSIVE FIXES --- */
 @media (max-width: 767px) {
   .app-container { padding: 16px; }
   .app-header { margin-bottom: 24px; }
@@ -163,36 +175,28 @@ body.light-mode .provider-logo { background-color: #f8fafc; padding: 5px; border
   .form-section { padding: 20px; }
   .search-button { padding: 14px; font-size: 1rem; }
   .filter-controls { justify-content: center; }
+  .search-form-grid { display: flex; flex-direction: column; gap: 16px; }
+  .input-group:first-of-type { margin-bottom: 0; }
 
-  .search-form-grid { grid-template-rows: auto auto auto; row-gap: 16px; }
-  .input-group:nth-of-type(1) { grid-row: 1; margin-bottom: 0; }
-
+  /* FIX: New stable positioning for mobile swap button */
   .swap-button {
-    grid-row: 2;
-    justify-self: center;
-    margin: -24px 0;
+    position: relative;
     transform: none;
+    margin: -8px auto; /* Pulls it between the two inputs */
+    top: 0;
+    left: 0;
   }
-
-  .input-group:nth-of-type(2) { grid-row: 3; }
+  .swap-button:hover span { transform: rotate(180deg) scale(1.1); }
 
   .card-content {
-    display: grid;
     grid-template-columns: auto 1fr;
     grid-template-rows: auto auto;
     column-gap: 16px;
     align-items: center;
     padding: 12px;
   }
-  .provider-logo {
-    grid-row: 1 / span 2;
-    align-self: center;
-  }
-  .trip-details {
-    grid-column: 2;
-    grid-row: 1;
-    text-align: left;
-  }
+  .provider-logo { grid-row: 1 / span 2; align-self: center; }
+  .trip-details { grid-column: 2; grid-row: 1; text-align: left; }
   .trip-meta {
     grid-column: 2;
     grid-row: 2;
@@ -204,19 +208,8 @@ body.light-mode .provider-logo { background-color: #f8fafc; padding: 5px; border
     flex-wrap: wrap;
     gap: 8px;
   }
-  .trip-meta .time, .trip-meta .cost, .trip-meta .book-button {
-    margin: 0;
-  }
-  .trip-meta .cost {
-      font-size: 1.1rem;
-  }
-
-  .leg {
-    grid-template-columns: auto 1fr;
-    row-gap: 4px;
-  }
-  .leg .trip-details, .leg .trip-meta {
-    grid-column: 2;
-    text-align: left;
-  }
+  .trip-meta .time, .trip-meta .cost, .trip-meta .book-button { margin: 0; }
+  .trip-meta .cost { font-size: 1.1rem; }
+  .leg { grid-template-columns: auto 1fr; row-gap: 4px; }
+  .leg .trip-details, .leg .trip-meta { grid-column: 2; text-align: left; }
 }
