@@ -197,6 +197,55 @@ const MultiLegResultCard = ({ result }) => {
     );
 };
 
+const CommunitySuggestionCard = ({ suggestion }) => {
+    const [isExpanded, setIsExpanded] = useState(false);
+    return (
+        <div className="suggestion-card">
+            <div className="suggestion-header">
+                <div className="suggestion-route">
+                    <span className="location">{suggestion.from}</span>
+                    <span className="route-arrow">&rarr;</span>
+                    <span className="location">{suggestion.to}</span>
+                </div>
+                <button className="suggest-button" onClick={() => setIsExpanded(!isExpanded)}>
+                    {isExpanded ? 'Hide Details' : 'Show Details'}
+                </button>
+            </div>
+            {isExpanded && (
+                <div className="suggestion-details">
+                    <p>This is a community-reported route and cannot be booked online. It's often a local or private bus service.</p>
+                    <ul>
+                        <li><strong>Typical Time:</strong> {suggestion.time}</li>
+                        <li><strong>Estimated Cost:</strong> &#8377;{suggestion.cost}</li>
+                        <li><strong>Service Type:</strong> {suggestion.service}</li>
+                    </ul>
+                </div>
+            )}
+        </div>
+    );
+};
+
+const FAQItem = ({ faq }) => {
+    const [isOpen, setIsOpen] = useState(false);
+    return (
+        <div className="faq-item">
+            <button className="faq-question" onClick={() => setIsOpen(!isOpen)}>
+                <span>{faq.question}</span>
+                <span className={`faq-icon ${isOpen ? 'open' : ''}`}>+</span>
+            </button>
+            {isOpen && <div className="faq-answer"><p>{faq.answer}</p></div>}
+        </div>
+    );
+};
+
+const AppFooter = () => (
+    <footer className="app-footer fade-in-section">
+        <div className="footer-content">
+            <p className="footer-team">TEAM MANDI MASALA</p>
+            <p>&copy; {new Date().getFullYear()} TravelMate. All Rights Reserved.</p>
+        </div>
+    </footer>
+);
 
 function App() {
     const [isLoading, setIsLoading] = useState(true);
@@ -207,10 +256,22 @@ function App() {
     const [ecoFriendlyOnly, setEcoFriendlyOnly] = useState(false);
 
     useEffect(() => {
-        setTimeout(() => {
-            setIsLoading(false);
-        }, 750);
-    }, []);
+        setTimeout(() => setIsLoading(false), 750);
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in-section').forEach(section => {
+            observer.observe(section);
+        });
+        
+        return () => observer.disconnect();
+    }, [isLoading]);
 
     useEffect(() => { document.body.classList.toggle('light-mode', isLightMode); }, [isLightMode]);
 
@@ -276,6 +337,18 @@ function App() {
         return allOptions;
     }, [results, sortBy, ecoFriendlyOnly]);
 
+    const communitySuggestions = [
+        { from: "Pala", to: "Kottayam", time: "Approx. 45 mins", cost: 47, service: "Private Bus (Non-bookable)" },
+        { from: "Kanjirappally", to: "Mundakayam", time: "Approx. 30 mins", cost: 43, service: "Local Private Bus" },
+    ];
+    
+    const faqs = [
+        { question: "What is TravelMate?", answer: "TravelMate is a multi-modal travel search engine designed to help you find the best route for your journey, combining options like buses, trains, and flights all in one place." },
+        { question: "Can I book tickets directly through TravelMate?", answer: "Currently, TravelMate helps you find and compare the best routes. The 'Book Now' button will redirect you to the service provider's website where you can complete your booking." },
+        { question: "What are 'Community Suggestions'?", answer: "These are routes reported by other users, like local private buses, that aren't available for online booking. They are provided to give you more travel options, especially for shorter distances." },
+        { question: "How is the 'Eco-Friendly' filter determined?", answer: "Routes are marked as eco-friendly based on their carbon footprint per passenger. Public transport like buses and trains are generally considered more eco-friendly than private cars or flights for the same distance." }
+    ];
+
     if (isLoading) {
       return <LoadingScreen />;
     }
@@ -296,17 +369,13 @@ function App() {
                 />
                 
                 {hasSearched && (
-                    <section className="results-section">
+                    <section className="results-section fade-in-section">
                         <h2>Available Options</h2>
                         <div className="results-container">
                             {processedResults.length > 0 ? (
                                 processedResults.map((result) => {
-                                    if (result.type === 'direct') {
-                                        return <ResultCard key={result.id} result={result} />;
-                                    }
-                                    if (result.type === 'connected') {
-                                        return <MultiLegResultCard key={result.id} result={result} />;
-                                    }
+                                    if (result.type === 'direct') return <ResultCard key={result.id} result={result} />;
+                                    if (result.type === 'connected') return <MultiLegResultCard key={result.id} result={result} />;
                                     return null;
                                 })
                             ) : (
@@ -319,7 +388,23 @@ function App() {
                         </div>
                     </section>
                 )}
+
+                <section className="suggestions-section fade-in-section">
+                    <h2>Community Suggestions</h2>
+                    <p className="section-subtitle">Local routes reported by users. Not bookable online.</p>
+                    <div className="suggestions-container">
+                        {communitySuggestions.map((s, i) => <CommunitySuggestionCard key={i} suggestion={s} />)}
+                    </div>
+                </section>
+
+                <section className="faq-section fade-in-section">
+                    <h2>Frequently Asked Questions</h2>
+                    <div className="faq-container">
+                        {faqs.map((faq, i) => <FAQItem key={i} faq={faq} />)}
+                    </div>
+                </section>
             </main>
+            <AppFooter />
         </div>
     );
 }
