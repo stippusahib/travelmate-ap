@@ -3,7 +3,7 @@ import './App.css';
 import travelData from './data.json';
 
 // --- Helper Functions & Constants ---
-const modeLogos = { 'Bus': '/bus.png', 'Train': '/train.png', 'Car': '/uber.png', 'Auto': '/uber.png', 'Flight': '/plane.png', 'Metro': '/metro.png', 'Default': '/logo.png', 'Community': '/users.png' };
+const modeLogos = { 'Bus': '/bus.png', 'Train': '/train.png', 'Car': '/uber.png', 'Auto': '/uber.png', 'Flight': '/plane.png', 'Metro': '/metro.png', 'Community': '/users.png' };
 
 const parseDuration = (timeStr) => {
     if (!timeStr) return 0;
@@ -232,11 +232,7 @@ function App() {
     const [sortBy, setSortBy] = useState(null);
     const [ecoFriendlyOnly, setEcoFriendlyOnly] = useState(false);
 
-    // Dummy data for community suggestions
-    const communityData = [
-        { type: "community", from: "Pala", to: "Kottayam", details: { route: "Pala Bus Stand -> Kottayam KSRTC", time: "Approx. 45 mins", cost: 47 } },
-        { type: "community", from: "Kanjirappally", to: "Mundakayam", details: { route: "Direct local bus", time: "Approx. 30 mins", cost: 43 } }
-    ];
+    const communityData = [ { type: "community", from: "Pala", to: "Kottayam", details: { route: "Pala Bus Stand -> Kottayam KSRTC", time: "Approx. 45 mins", cost: 47 } }, { type: "community", from: "Kanjirappally", to: "Mundakayam", details: { route: "Direct local bus", time: "Approx. 30 mins", cost: 43 } } ];
 
     useEffect(() => {
         setTimeout(() => setIsLoading(false), 750);
@@ -248,17 +244,15 @@ function App() {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('is-visible');
-                    observer.unobserve(entry.target);
                 }
             });
         }, { threshold: 0.1 });
 
-        document.querySelectorAll('.fade-in-section').forEach(section => {
-            observer.observe(section);
-        });
+        const elements = document.querySelectorAll('.fade-in-section');
+        elements.forEach(el => observer.observe(el));
         
         return () => observer.disconnect();
-    }, [isLoading, results]);
+    }, [isLoading, hasSearched, results]);
 
     useEffect(() => { document.body.classList.toggle('light-mode', isLightMode); }, [isLightMode]);
 
@@ -280,78 +274,4 @@ function App() {
     const handleSearch = (from, to) => {
         const fromQuery = from.toLowerCase().trim();
         const toQuery = to.toLowerCase().trim();
-        const officialRoutes = travelData.filter(r => r.from.toLowerCase() === fromQuery && r.to.toLowerCase() === toQuery);
-        const communityRoutes = communityData.filter(r => r.from.toLowerCase() === fromQuery && r.to.toLowerCase() === toQuery);
-        setResults([...officialRoutes, ...communityRoutes]);
-        setHasSearched(true);
-        setSortBy(null);
-        setEcoFriendlyOnly(false);
-    };
-
-    const handleSort = (key) => { setSortBy(prev => (prev === key ? null : key)); };
-
-    const processedResults = useMemo(() => {
-        if (!results || results.length === 0) return [];
-        let allOptions = [];
-        results.forEach((route, routeIndex) => {
-            if (route.type === 'direct') { route.options.forEach(opt => allOptions.push({ ...opt, type: 'direct', id: `d-${routeIndex}-${opt.name}` })); }
-            else if (route.type === 'connected') { allOptions.push({ ...route, type: 'connected', id: `c-${routeIndex}` }); }
-            else if (route.type === 'community') { allOptions.push({ ...route, type: 'community', id: `com-${routeIndex}` }); }
-        });
-
-        if (ecoFriendlyOnly) { /* ... filtering logic ... */ }
-        if (sortBy) {
-            allOptions.sort((a, b) => {
-                const costA = a.cost || a.totalCost || a.details?.cost || 0;
-                const costB = b.cost || b.totalCost || b.details?.cost || 0;
-                const timeA = parseDuration(a.time || a.totalTime || a.details?.time);
-                const timeB = parseDuration(b.time || b.totalTime || b.details?.time);
-                if (sortBy === 'cost') return costA - costB;
-                if (sortBy === 'time') return timeA - timeB;
-                return 0;
-            });
-        }
-        return allOptions;
-    }, [results, sortBy, ecoFriendlyOnly]);
-
-    const faqs = [ /* ... faq data ... */ ];
-
-    if (isLoading) { return <LoadingScreen />; }
-
-    return (
-        <div className="app-container">
-            <button className="theme-switcher" onClick={() => setIsLightMode(!isLightMode)} title="Toggle Theme"> {isLightMode ? '🌙' : '☀️'} </button>
-            <header className="app-header"> <img src="/logo.png" alt="TravelMate Logo" className="app-logo"/> </header>
-            <main>
-                <SearchForm onSearch={handleSearch} allLocations={allLocations} onSort={handleSort} currentSort={sortBy} onToggleEco={() => setEcoFriendlyOnly(prev => !prev)} isEco={ecoFriendlyOnly} showFilters={results.length > 0} />
-                <SuggestRouteCTA />
-                {hasSearched && (
-                    <section className="results-section fade-in-section">
-                        <h2>Available Options</h2>
-                        <div className="results-container">
-                            {processedResults.length > 0 ? (
-                                processedResults.map((result) => {
-                                    if (result.type === 'direct') return <ResultCard key={result.id} result={result} />;
-                                    if (result.type === 'connected') return <MultiLegResultCard key={result.id} result={result} />;
-                                    if (result.type === 'community') return <CommunityResultCard key={result.id} result={result} />;
-                                    return null;
-                                })
-                            ) : (
-                                <div className="result-card"><div className="card-content">No routes found for this journey.</div></div>
-                            )}
-                        </div>
-                    </section>
-                )}
-                <section className="faq-section fade-in-section">
-                    <h2>Frequently Asked Questions</h2>
-                    <div className="faq-container">
-                        {faqs.map((faq, i) => <FAQItem key={i} faq={faq} />)}
-                    </div>
-                </section>
-            </main>
-            <AppFooter />
-        </div>
-    );
-}
-
-export default App;
+        const officialRoutes = travelData.filter(
