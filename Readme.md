@@ -32,7 +32,16 @@ This hackathon project showcases:
 *  **Results Display** with provider logos, cost/time, and “Book Now” CTA.
 *  **Sorting & Filters** – fastest, cheapest, eco-friendly.
 *  **Light/Dark Mode Toggle**.
+*  **Responsive UI** using Breeze theme styling. 
+*  **Smart Search** with autocomplete, date picker, swap button.
+*  **Connected Journeys** (multi-leg).
+*  **Results Display** with provider logos, cost/time, and “Book Now” CTA.
+*  **Sorting & Filters** – fastest, cheapest, eco-friendly.
+*  **Light/Dark Mode Toggle**.
 *  **Responsive UI** using Breeze theme styling.
+*  **Community Suggestions** – A brand-new, beautifully designed section below the search results showing dummy data for user-reported trips. These cards have a distinct look and include a **“Show Details”** button that smoothly expands to show more information.
+*  **FAQ Section** – A clean, professional, and interactive FAQ section with an accordion-style layout where users can click each question to reveal the answer.
+*  **Professional Footer** – A sleek footer now appears at the bottom of the page.
 
 ---
 
