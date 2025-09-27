@@ -98,8 +98,23 @@ body.light-mode .date-input::-webkit-calendar-picker-indicator { filter: none; }
 .result-card, .multi-leg-card, .community-card { background: var(--card-background); backdrop-filter: blur(10px); border-radius: 16px; box-shadow: var(--card-shadow); border: 1px solid var(--card-border); transition: all 0.3s ease; }
 .result-card:hover, .multi-leg-card:hover, .community-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.2); border-color: var(--primary-color); }
 .card-content { display: grid; grid-template-columns: auto 1fr auto; align-items: center; padding: 16px; gap: 16px; }
-.provider-logo { width: 48px; height: 48px; object-fit: contain; flex-shrink: 0; border-radius: 12px; }
-body.light-mode .provider-logo { background-color: #f8fafc; padding: 5px; border: 1px solid #e2e8f0; }
+
+/* FIX: Added background and padding to base style for dark mode icon visibility */
+.provider-logo {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  flex-shrink: 0;
+  border-radius: 12px;
+  background-color: #fff;
+  padding: 5px;
+}
+body.light-mode .provider-logo {
+  background-color: #f8fafc;
+  padding: 5px;
+  border: 1px solid #e2e8f0;
+}
+
 .trip-details .mode { font-weight: 600; font-size: 1.125rem; color: var(--text-primary);}
 .trip-details .sub { font-size: 0.875rem; color: var(--text-muted); }
 .trip-meta { text-align: right; }
@@ -143,7 +158,6 @@ body.light-mode .provider-logo { background-color: #f8fafc; padding: 5px; border
 .fade-in-section { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
 .fade-in-section.is-visible { opacity: 1; transform: translateY(0); }
 
-/* --- MODAL STYLES --- */
 .modal-backdrop { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px); z-index: 1000; display: flex; align-items: center; justify-content: center; animation: fadeIn 0.3s ease; }
 .modal-content { background: var(--card-background); border: 1px solid var(--card-border); border-radius: 24px; padding: 32px; width: 90%; max-width: 500px; position: relative; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); animation: scaleIn 0.3s ease; }
 .modal-close-button { position: absolute; top: 16px; right: 16px; background: none; border: none; font-size: 2rem; color: var(--text-muted); cursor: pointer; line-height: 1; transition: color 0.2s ease; }
@@ -163,8 +177,9 @@ body.light-mode .provider-logo { background-color: #f8fafc; padding: 5px; border
   .app-container { padding: 16px; }
   .app-header { margin-bottom: 24px; }
   .app-logo { height: 90px; }
+  
   .form-section { padding: 20px; }
-  .search-form-grid { display: grid; grid-template-columns: 1fr; grid-template-rows: auto auto auto; gap: 16px; }
+  .search-form-grid { grid-template-columns: 1fr; grid-template-rows: auto auto auto; gap: 16px; }
   .search-form-grid .input-group:first-of-type { grid-row: 1; }
   .swap-button { grid-row: 2; justify-self: center; align-self: center; height: 36px; width: 36px; }
   .search-form-grid .input-group:last-of-type { grid-row: 3; }
