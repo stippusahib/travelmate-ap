@@ -19,6 +19,61 @@ const parseDuration = (timeStr) => {
 
 const LoadingScreen = () => ( <div className="loading-screen"><img src="/logo.png" alt="Loading..." /></div> );
 
+const Modal = ({ isOpen, onClose, children }) => {
+    if (!isOpen) return null;
+    return (
+        <div className="modal-backdrop" onClick={onClose}>
+            <div className="modal-content" onClick={e => e.stopPropagation()}>
+                <button className="modal-close-button" onClick={onClose}>&times;</button>
+                {children}
+            </div>
+        </div>
+    );
+};
+
+const SuggestionForm = ({ onClose }) => {
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        // In a real app, you would handle form data submission here
+        console.log("Form submitted!");
+        onClose(); // Close the modal after submission
+    };
+    return (
+        <div className="suggestion-form-container">
+            <h3>Suggest a Local Route</h3>
+            <p>Your contribution helps everyone travel smarter. Please provide the details of the non-bookable route.</p>
+            <form onSubmit={handleSubmit} className="suggestion-form">
+                <div className="form-row">
+                    <div className="form-group">
+                        <label htmlFor="from">From</label>
+                        <input type="text" id="from" placeholder="e.g., Pala" required />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="to">To</label>
+                        <input type="text" id="to" placeholder="e.g., Kottayam" required />
+                    </div>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="details">Route Details</label>
+                    <input type="text" id="details" placeholder="e.g., Via Main Central Road" />
+                </div>
+                 <div className="form-row">
+                    <div className="form-group">
+                        <label htmlFor="time">Typical Time</label>
+                        <input type="text" id="time" placeholder="e.g., 45 mins" required />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="cost">Estimated Cost (₹)</label>
+                        <input type="number" id="cost" placeholder="e.g., 47" required />
+                    </div>
+                </div>
+                <button type="submit" className="submit-suggestion-button">Submit Suggestion</button>
+            </form>
+        </div>
+    );
+};
+
+
 const AutocompleteInput = ({ value, onChange, placeholder, label, allLocations }) => {
     const [showSuggestions, setShowSuggestions] = useState(false);
     const [highlightedIndex, setHighlightedIndex] = useState(-1);
@@ -191,11 +246,11 @@ const CommunityResultCard = ({ result }) => {
     );
 };
 
-const SuggestRouteCTA = () => (
+const SuggestRouteCTA = ({ onSuggestClick }) => (
     <section className="suggest-cta-section fade-in-section">
         <h3>Don't see a local route you know?</h3>
         <p>Help other travelers by suggesting non-bookable routes like local buses.</p>
-        <button className="suggest-cta-button">Suggest a Route</button>
+        <button className="suggest-cta-button" onClick={onSuggestClick}>Suggest a Route</button>
     </section>
 );
 
@@ -231,6 +286,7 @@ function App() {
     const [isLightMode, setIsLightMode] = useState(false);
     const [sortBy, setSortBy] = useState(null);
     const [ecoFriendlyOnly, setEcoFriendlyOnly] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const communityData = [ { type: "community", from: "Pala", to: "Kottayam", details: { route: "Pala Bus Stand -> Kottayam KSRTC", time: "Approx. 45 mins", cost: 47 } }, { type: "community", from: "Kanjirappally", to: "Mundakayam", details: { route: "Direct local bus", time: "Approx. 30 mins", cost: 43 } } ];
 
@@ -252,7 +308,7 @@ function App() {
         elements.forEach(el => observer.observe(el));
         
         return () => observer.disconnect();
-    }, [isLoading, hasSearched, results]);
+    }, [isLoading, hasSearched]);
 
     useEffect(() => { document.body.classList.toggle('light-mode', isLightMode); }, [isLightMode]);
 
@@ -274,4 +330,82 @@ function App() {
     const handleSearch = (from, to) => {
         const fromQuery = from.toLowerCase().trim();
         const toQuery = to.toLowerCase().trim();
-        const officialRoutes = travelData.filter(
+        const officialRoutes = travelData.filter(r => r.from.toLowerCase() === fromQuery && r.to.toLowerCase() === toQuery);
+        const communityRoutes = communityData.filter(r => r.from.toLowerCase() === fromQuery && r.to.toLowerCase() === toQuery);
+        setResults([...officialRoutes, ...communityRoutes]);
+        setHasSearched(true);
+        setSortBy(null);
+        setEcoFriendlyOnly(false);
+    };
+
+    const handleSort = (key) => { setSortBy(prev => (prev === key ? null : key)); };
+
+    const processedResults = useMemo(() => {
+        if (!results || results.length === 0) return [];
+        let allOptions = [];
+        results.forEach((route, routeIndex) => {
+            if (route.type === 'direct') { route.options.forEach(opt => allOptions.push({ ...opt, type: 'direct', id: `d-${routeIndex}-${opt.name}` })); }
+            else if (route.type === 'connected') { allOptions.push({ ...route, type: 'connected', id: `c-${routeIndex}` }); }
+            else if (route.type === 'community') { allOptions.push({ ...route, type: 'community', id: `com-${routeIndex}` }); }
+        });
+
+        if (ecoFriendlyOnly) { /* ... filtering logic ... */ }
+        if (sortBy) {
+            allOptions.sort((a, b) => {
+                const costA = a.cost || a.totalCost || a.details?.cost || 0;
+                const costB = b.cost || b.totalCost || b.details?.cost || 0;
+                const timeA = parseDuration(a.time || a.totalTime || a.details?.time);
+                const timeB = parseDuration(b.time || b.totalTime || b.details?.time);
+                if (sortBy === 'cost') return costA - costB;
+                if (sortBy === 'time') return timeA - timeB;
+                return 0;
+            });
+        }
+        return allOptions;
+    }, [results, sortBy, ecoFriendlyOnly]);
+
+    const faqs = [ { question: "What is TravelMate?", answer: "TravelMate is a multi-modal travel search engine designed to help you find the best route for your journey, combining options like buses, trains, and flights all in one place." }, { question: "Can I book tickets directly through TravelMate?", answer: "Currently, TravelMate helps you find and compare the best routes. The 'Book Now' button will redirect you to the service provider's website where you can complete your booking." }, { question: "What are 'Community Suggestions'?", answer: "These are routes reported by other users, like local private buses, that aren't available for online booking. They are provided to give you more travel options, especially for shorter distances." }, { question: "How is the 'Eco-Friendly' filter determined?", answer: "Routes are marked as eco-friendly based on their carbon footprint per passenger. Public transport like buses and trains are generally considered more eco-friendly than private cars or flights for the same distance." } ];
+
+    if (isLoading) { return <LoadingScreen />; }
+
+    return (
+        <div className="app-container">
+            <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+                <SuggestionForm onClose={() => setIsModalOpen(false)} />
+            </Modal>
+
+            <button className="theme-switcher" onClick={() => setIsLightMode(!isLightMode)} title="Toggle Theme"> {isLightMode ? '🌙' : '☀️'} </button>
+            <header className="app-header"> <img src="/logo.png" alt="TravelMate Logo" className="app-logo"/> </header>
+            <main>
+                <SearchForm onSearch={handleSearch} allLocations={allLocations} onSort={handleSort} currentSort={sortBy} onToggleEco={() => setEcoFriendlyOnly(prev => !prev)} isEco={ecoFriendlyOnly} showFilters={results.length > 0} />
+                <SuggestRouteCTA onSuggestClick={() => setIsModalOpen(true)} />
+                {hasSearched && (
+                    <section className="results-section fade-in-section">
+                        <h2>Available Options</h2>
+                        <div className="results-container">
+                            {processedResults.length > 0 ? (
+                                processedResults.map((result) => {
+                                    if (result.type === 'direct') return <ResultCard key={result.id} result={result} />;
+                                    if (result.type === 'connected') return <MultiLegResultCard key={result.id} result={result} />;
+                                    if (result.type === 'community') return <CommunityResultCard key={result.id} result={result} />;
+                                    return null;
+                                })
+                            ) : (
+                                <div className="result-card"><div className="card-content">No routes found for this journey.</div></div>
+                            )}
+                        </div>
+                    </section>
+                )}
+                <section className="faq-section fade-in-section">
+                    <h2>Frequently Asked Questions</h2>
+                    <div className="faq-container">
+                        {faqs.map((faq, i) => <FAQItem key={i} faq={faq} />)}
+                    </div>
+                </section>
+            </main>
+            <AppFooter />
+        </div>
+    );
+}
+
+export default App;
